@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>주차별 수업 복습 앱 MVP++</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --line: #374151;
+      --text: #f9fafb;
+      --muted: #9ca3af;
+      --accent: #22c55e;
+      --accent-2: #16a34a;
+      --danger: #ef4444;
+      --warn: #f59e0b;
+      --blue: #38bdf8;
+      --violet: #a78bfa;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #0b1220 0%, #111827 100%);
+      color: var(--text);
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px 16px 60px;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+    strong { color: #fff; }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(8px);
+    }
+
+    .hero,
+    .grid-2,
+    .grid-3,
+    .grid-4 {
+      display: grid;
+      gap: 16px;
+    }
+
+    .hero { grid-template-columns: 1.15fr 0.85fr; }
+    .grid-2 { grid-template-columns: 1fr 1fr; }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+    .hidden { display: none !important; }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    input, select, textarea, button {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--panel-2);
+      color: var(--text);
+      padding: 12px 14px;
+      font-size: 14px;
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    button {
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.18s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      border-color: #4b5563;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #052e16;
+      border: none;
+    }
+
+    .btn-primary:hover { background: var(--accent-2); }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+      border: none;
+    }
+
+    .btn-secondary {
+      background: #334155;
+      color: white;
+    }
+
+    .btn-blue {
+      background: #0f766e;
+      color: white;
+      border: none;
+    }
+
+    .btn-violet {
+      background: #6d28d9;
+      color: white;
+      border: none;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .toolbar > * {
+      flex: 1 1 160px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.15);
+      color: #bbf7d0;
+      font-size: 12px;
+      margin-right: 8px;
+      margin-bottom: 8px;
+      border: 1px solid rgba(34, 197, 94, 0.25);
+    }
+
+    .muted { color: var(--muted); }
+
+    .note-item,
+    .student-card,
+    .stat-card,
+    .comment-box {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      background: rgba(31, 41, 55, 0.7);
+    }
+
+    .note-item { margin-bottom: 12px; }
+
+    .note-item h4,
+    .student-card h4,
+    .stat-card h4,
+    .comment-box h4 {
+      margin: 0 0 8px;
+      font-size: 17px;
+    }
+
+    .note-meta,
+    .student-meta {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+
+    .status-good { color: #86efac; }
+    .status-warn { color: #fcd34d; }
+    .status-miss { color: #fca5a5; }
+    .status-blue { color: #7dd3fc; }
+    .status-violet { color: #c4b5fd; }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #e5e7eb;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 24px;
+      color: var(--muted);
+      border: 1px dashed var(--line);
+      border-radius: 16px;
+    }
+
+    .summary-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .stat-card .stat-value {
+      font-size: 30px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .student-card.submitted { border-color: rgba(34, 197, 94, 0.45); }
+    .student-card.missing { border-color: rgba(239, 68, 68, 0.45); }
+
+    .small { font-size: 12px; }
+
+    .note-footer {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .teacher-comment {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 12px;
+      background: rgba(109, 40, 217, 0.12);
+      border: 1px solid rgba(167, 139, 250, 0.3);
+    }
+
+    .teacher-comment textarea {
+      min-height: 90px;
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .grid-2,
+      .grid-3,
+      .grid-4,
+      .summary-row,
+      .note-footer {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div>
+        <h1>주차별 수업 복습 앱</h1>
+        <p class="muted">학생은 수업 내용을 정리하고, 강사는 제출 현황과 피드백을 주차별로 관리할 수 있습니다.</p>
+      </div>
+      <div class="toolbar">
+        <span id="userInfo" class="badge">로그인되지 않음</span>
+        <button id="logoutBtn" class="btn-secondary hidden">로그아웃</button>
+      </div>
+    </div>
+
+    <section id="authSection" class="hero">
+      <div class="card">
+        <h2>로그인 / 회원가입</h2>
+        <p class="muted">학생 회원가입은 모두 student로 고정됩니다. 강사 계정은 따로 지정하거나 테스트용으로 아래 버튼을 사용하세요.</p>
+        <div class="grid-2">
+          <div>
+            <label for="email">이메일</label>
+            <input id="email" type="email" placeholder="example@email.com" />
+          </div>
+          <div>
+            <label for="password">비밀번호</label>
+            <input id="password" type="password" placeholder="비밀번호 입력" />
+          </div>
+        </div>
+        <div class="grid-2" style="margin-top:12px;">
+          <div>
+            <label for="name">이름</label>
+            <input id="name" type="text" placeholder="홍길동" />
+          </div>
+          <div>
+            <label for="className">반 이름</label>
+            <input id="className" type="text" placeholder="예: 믹싱 기초반" />
+          </div>
+        </div>
+        <div class="grid-2" style="margin-top:14px;">
+          <button id="signupBtn" class="btn-primary">학생 회원가입</button>
+          <button id="loginBtn" class="btn-secondary">로그인</button>
+        </div>
+        <div style="margin-top:12px;">
+          <button id="createTeacherBtn" class="btn-violet">테스트용 강사 계정 만들기</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>이번 단계에서 추가된 기능</h2>
+        <div class="pill">학생 role 고정</div>
+        <div class="pill">강사 코멘트 저장</div>
+        <div class="pill">학생 화면에서 피드백 확인</div>
+        <div class="pill">주차별 코멘트 관리</div>
+        <p class="muted" style="margin-top:12px;">
+          이제 학생은 teacher 권한으로 가입하지 못하고, 강사는 각 노트에 개별 피드백을 남길 수 있습니다.
+        </p>
+      </div>
+    </section>
+
+    <section id="studentSection" class="hidden">
+      <div class="card">
+        <div class="section-title">
+          <h2>학생 복습 노트 작성</h2>
+          <span class="badge">student</span>
+        </div>
+        <div class="grid-3">
+          <div>
+            <label for="weekNumber">주차</label>
+            <select id="weekNumber"></select>
+          </div>
+          <div>
+            <label for="lessonDate">수업 날짜</label>
+            <input id="lessonDate" type="date" />
+          </div>
+          <div>
+            <label for="understanding">이해도</label>
+            <select id="understanding">
+              <option value="1">1 - 거의 모르겠음</option>
+              <option value="2">2</option>
+              <option value="3" selected>3 - 보통</option>
+              <option value="4">4</option>
+              <option value="5">5 - 잘 이해함</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-top:12px;">
+          <label for="topic">오늘 배운 주제</label>
+          <input id="topic" type="text" placeholder="예: 컴프레서의 어택/릴리즈와 활용" />
+        </div>
+
+        <div style="margin-top:12px;">
+          <label for="summary">오늘 수업 요약</label>
+          <textarea id="summary" placeholder="오늘 수업 내용을 학생이 자기 말로 정리"></textarea>
+        </div>
+
+        <div class="grid-2" style="margin-top:12px;">
+          <div>
+            <label for="keyPoints">핵심 개념 3가지</label>
+            <textarea id="keyPoints" placeholder="예: 1) threshold 2) ratio 3) knee"></textarea>
+          </div>
+          <div>
+            <label for="questions">헷갈리는 점 / 질문</label>
+            <textarea id="questions" placeholder="아직 이해가 덜 된 부분"></textarea>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:12px;">
+          <div>
+            <label for="homework">다음 수업 전 복습/과제</label>
+            <textarea id="homework" placeholder="다음 수업 전 할 일"></textarea>
+          </div>
+          <div>
+            <label for="reviewed">복습 여부</label>
+            <select id="reviewed">
+              <option value="false">아직 복습 안 함</option>
+              <option value="true">복습 완료</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="toolbar" style="margin-top:14px;">
+          <button id="saveNoteBtn" class="btn-primary">노트 저장</button>
+          <button id="resetFormBtn" class="btn-secondary">입력 초기화</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">
+          <h2>내가 작성한 노트</h2>
+          <button id="refreshMyNotesBtn" class="btn-secondary">새로고침</button>
+        </div>
+        <div id="myNotesList"></div>
+      </div>
+    </section>
+
+    <section id="teacherSection" class="hidden">
+      <div class="card">
+        <div class="section-title">
+          <h2>강사용 관리 화면</h2>
+          <span class="badge">teacher</span>
+        </div>
+        <div class="toolbar">
+          <div>
+            <label for="filterClass">반 필터</label>
+            <input id="filterClass" type="text" placeholder="예: 믹싱 기초반" />
+          </div>
+          <div>
+            <label for="filterWeek">주차 필터</label>
+            <select id="filterWeek"></select>
+          </div>
+          <div>
+            <label for="rosterClass">학생 명단용 반 이름</label>
+            <input id="rosterClass" type="text" placeholder="반 이름을 정확히 입력" />
+          </div>
+          <div>
+            <label>&nbsp;</label>
+            <button id="loadDashboardBtn" class="btn-primary">대시보드 불러오기</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">
+          <h2>주차 요약</h2>
+          <span class="small muted">선택한 반 + 주차 기준</span>
+        </div>
+        <div id="teacherSummary" class="summary-row"></div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">
+          <h2>학생별 제출 현황</h2>
+          <span class="small muted">초록 = 제출, 빨강 = 미제출</span>
+        </div>
+        <div id="teacherRosterBoard" class="grid-3"></div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">
+          <h2>제출된 노트 상세 및 코멘트</h2>
+          <button id="loadAllNotesBtn" class="btn-secondary">상세 다시 불러오기</button>
+        </div>
+        <div id="teacherNotesList"></div>
+      </div>
+    </section>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js';
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      signOut,
+      onAuthStateChanged
+    } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      getDoc,
+      addDoc,
+      collection,
+      serverTimestamp,
+      query,
+      where,
+      orderBy,
+      getDocs,
+      updateDoc
+    } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
+
+    const firebaseConfig = {
+      apiKey: 'YOUR_API_KEY',
+      authDomain: 'YOUR_PROJECT.firebaseapp.com',
+      projectId: 'YOUR_PROJECT_ID',
+      storageBucket: 'YOUR_PROJECT.firebasestorage.app',
+      messagingSenderId: 'YOUR_SENDER_ID',
+      appId: 'YOUR_APP_ID'
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const authSection = document.getElementById('authSection');
+    const studentSection = document.getElementById('studentSection');
+    const teacherSection = document.getElementById('teacherSection');
+    const userInfo = document.getElementById('userInfo');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    const emailEl = document.getElementById('email');
+    const passwordEl = document.getElementById('password');
+    const nameEl = document.getElementById('name');
+    const classNameEl = document.getElementById('className');
+
+    const signupBtn = document.getElementById('signupBtn');
+    const loginBtn = document.getElementById('loginBtn');
+    const createTeacherBtn = document.getElementById('createTeacherBtn');
+
+    const weekNumberEl = document.getElementById('weekNumber');
+    const lessonDateEl = document.getElementById('lessonDate');
+    const understandingEl = document.getElementById('understanding');
+    const topicEl = document.getElementById('topic');
+    const summaryEl = document.getElementById('summary');
+    const keyPointsEl = document.getElementById('keyPoints');
+    const questionsEl = document.getElementById('questions');
+    const homeworkEl = document.getElementById('homework');
+    const reviewedEl = document.getElementById('reviewed');
+    const saveNoteBtn = document.getElementById('saveNoteBtn');
+    const resetFormBtn = document.getElementById('resetFormBtn');
+    const refreshMyNotesBtn = document.getElementById('refreshMyNotesBtn');
+    const myNotesList = document.getElementById('myNotesList');
+
+    const filterClassEl = document.getElementById('filterClass');
+    const filterWeekEl = document.getElementById('filterWeek');
+    const rosterClassEl = document.getElementById('rosterClass');
+    const loadDashboardBtn = document.getElementById('loadDashboardBtn');
+    const loadAllNotesBtn = document.getElementById('loadAllNotesBtn');
+    const teacherSummary = document.getElementById('teacherSummary');
+    const teacherRosterBoard = document.getElementById('teacherRosterBoard');
+    const teacherNotesList = document.getElementById('teacherNotesList');
+
+    let currentUserProfile = null;
+    let editingNoteId = null;
+
+    function initWeekOptions() {
+      weekNumberEl.innerHTML = '';
+      filterWeekEl.innerHTML = '<option value="1">1주차</option>';
+
+      for (let i = 1; i <= 16; i += 1) {
+        const opt1 = document.createElement('option');
+        opt1.value = String(i);
+        opt1.textContent = `${i}주차`;
+        weekNumberEl.appendChild(opt1);
+
+        if (i > 1) {
+          const opt2 = document.createElement('option');
+          opt2.value = String(i);
+          opt2.textContent = `${i}주차`;
+          filterWeekEl.appendChild(opt2);
+        }
+      }
+    }
+
+    function showMessage(message) {
+      alert(message);
+    }
+
+    function resetForm() {
+      editingNoteId = null;
+      weekNumberEl.value = '1';
+      lessonDateEl.value = new Date().toISOString().slice(0, 10);
+      understandingEl.value = '3';
+      topicEl.value = '';
+      summaryEl.value = '';
+      keyPointsEl.value = '';
+      questionsEl.value = '';
+      homeworkEl.value = '';
+      reviewedEl.value = 'false';
+      saveNoteBtn.textContent = '노트 저장';
+    }
+
+    function escapeHtml(value = '') {
+      return String(value)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;')
+        .replaceAll('\n', '<br>');
+    }
+
+    function average(numbers) {
+      if (!numbers.length) return 0;
+      return numbers.reduce((sum, n) => sum + n, 0) / numbers.length;
+    }
+
+    async function createUserProfile(uid, profile) {
+      await setDoc(doc(db, 'users', uid), profile);
+    }
+
+    async function getUserProfile(uid) {
+      const snapshot = await getDoc(doc(db, 'users', uid));
+      return snapshot.exists() ? snapshot.data() : null;
+    }
+
+    signupBtn.addEventListener('click', async () => {
+      const email = emailEl.value.trim();
+      const password = passwordEl.value.trim();
+      const name = nameEl.value.trim();
+      const className = classNameEl.value.trim();
+
+      if (!email || !password || !name || !className) {
+        showMessage('이메일, 비밀번호, 이름, 반 이름을 모두 입력하세요.');
+        return;
+      }
+
+      try {
+        const result = await createUserWithEmailAndPassword(auth, email, password);
+        await createUserProfile(result.user.uid, {
+          name,
+          email,
+          role: 'student',
+          className,
+          createdAt: new Date().toISOString()
+        });
+        showMessage('학생 회원가입이 완료되었습니다.');
+      } catch (error) {
+        console.error(error);
+        showMessage(`회원가입 실패: ${error.message}`);
+      }
+    });
+
+    createTeacherBtn.addEventListener('click', async () => {
+      const email = emailEl.value.trim();
+      const password = passwordEl.value.trim();
+      const name = nameEl.value.trim();
+      const className = classNameEl.value.trim();
+
+      if (!email || !password || !name || !className) {
+        showMessage('이메일, 비밀번호, 이름, 반 이름을 모두 입력하세요.');
+        return;
+      }
+
+      try {
+        const result = await createUserWithEmailAndPassword(auth, email, password);
+        await createUserProfile(result.user.uid, {
+          name,
+          email,
+          role: 'teacher',
+          className,
+          createdAt: new Date().toISOString()
+        });
+        showMessage('테스트용 강사 계정이 생성되었습니다. 실운영에서는 Firestore에서 직접 지정하는 방식을 권장합니다.');
+      } catch (error) {
+        console.error(error);
+        showMessage(`강사 계정 생성 실패: ${error.message}`);
+      }
+    });
+
+    loginBtn.addEventListener('click', async () => {
+      const email = emailEl.value.trim();
+      const password = passwordEl.value.trim();
+
+      if (!email || !password) {
+        showMessage('이메일과 비밀번호를 입력하세요.');
+        return;
+      }
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+      } catch (error) {
+        console.error(error);
+        showMessage(`로그인 실패: ${error.message}`);
+      }
+    });
+
+    logoutBtn.addEventListener('click', async () => {
+      await signOut(auth);
+    });
+
+    saveNoteBtn.addEventListener('click', async () => {
+      if (!auth.currentUser || !currentUserProfile) return;
+
+      const payload = {
+        userId: auth.currentUser.uid,
+        studentName: currentUserProfile.name,
+        studentEmail: currentUserProfile.email,
+        className: currentUserProfile.className,
+        weekNumber: Number(weekNumberEl.value),
+        lessonDate: lessonDateEl.value,
+        understanding: Number(understandingEl.value),
+        topic: topicEl.value.trim(),
+        summary: summaryEl.value.trim(),
+        keyPoints: keyPointsEl.value.trim(),
+        questions: questionsEl.value.trim(),
+        homework: homeworkEl.value.trim(),
+        reviewed: reviewedEl.value === 'true',
+        updatedAt: serverTimestamp()
+      };
+
+      if (!payload.topic || !payload.summary) {
+        showMessage('오늘 배운 주제와 수업 요약은 꼭 입력하세요.');
+        return;
+      }
+
+      try {
+        if (editingNoteId) {
+          await updateDoc(doc(db, 'notes', editingNoteId), payload);
+          showMessage('노트를 수정했습니다.');
+        } else {
+          await addDoc(collection(db, 'notes'), {
+            ...payload,
+            teacherComment: '',
+            teacherCommentAuthor: '',
+            teacherCommentUpdatedAt: null,
+            createdAt: serverTimestamp()
+          });
+          showMessage('노트를 저장했습니다.');
+        }
+        resetForm();
+        loadMyNotes();
+      } catch (error) {
+        console.error(error);
+        showMessage(`저장 실패: ${error.message}`);
+      }
+    });
+
+    resetFormBtn.addEventListener('click', resetForm);
+    refreshMyNotesBtn.addEventListener('click', loadMyNotes);
+    loadAllNotesBtn.addEventListener('click', loadAllNotesForTeacher);
+    loadDashboardBtn.addEventListener('click', async () => {
+      await loadTeacherDashboard();
+      await loadAllNotesForTeacher();
+    });
+
+    async function saveTeacherComment(noteId, commentText) {
+      if (!auth.currentUser || !currentUserProfile || currentUserProfile.role !== 'teacher') {
+        showMessage('강사만 코멘트를 저장할 수 있습니다.');
+        return;
+      }
+
+      try {
+        await updateDoc(doc(db, 'notes', noteId), {
+          teacherComment: commentText.trim(),
+          teacherCommentAuthor: currentUserProfile.name,
+          teacherCommentUpdatedAt: serverTimestamp()
+        });
+        showMessage('강사 코멘트를 저장했습니다.');
+        await loadAllNotesForTeacher();
+      } catch (error) {
+        console.error(error);
+        showMessage(`코멘트 저장 실패: ${error.message}`);
+      }
+    }
+
+    async function loadMyNotes() {
+      if (!auth.currentUser) return;
+      myNotesList.innerHTML = '<div class="empty">불러오는 중...</div>';
+
+      try {
+        const q = query(
+          collection(db, 'notes'),
+          where('userId', '==', auth.currentUser.uid),
+          orderBy('weekNumber', 'desc')
+        );
+        const snapshot = await getDocs(q);
+
+        if (snapshot.empty) {
+          myNotesList.innerHTML = '<div class="empty">아직 작성한 노트가 없습니다.</div>';
+          return;
+        }
+
+        const items = [];
+        snapshot.forEach((docSnap) => {
+          const note = docSnap.data();
+          items.push(`
+            <div class="note-item">
+              <h4>${note.weekNumber}주차 · ${escapeHtml(note.topic)}</h4>
+              <div class="note-meta">
+                수업일: ${escapeHtml(note.lessonDate || '-')} · 이해도: ${note.understanding}/5 · 복습: ${note.reviewed ? '<span class="status-good">완료</span>' : '<span class="status-warn">미완료</span>'}
+              </div>
+              <p><strong>요약</strong><br>${escapeHtml(note.summary)}</p>
+              <p><strong>핵심 개념</strong><br>${escapeHtml(note.keyPoints)}</p>
+              <p><strong>질문</strong><br>${escapeHtml(note.questions)}</p>
+              <p><strong>과제/복습</strong><br>${escapeHtml(note.homework)}</p>
+              ${note.teacherComment ? `
+                <div class="teacher-comment">
+                  <strong class="status-violet">강사 피드백</strong><br>
+                  <div style="margin-top:8px;">${escapeHtml(note.teacherComment)}</div>
+                  <div class="small muted" style="margin-top:8px;">작성자: ${escapeHtml(note.teacherCommentAuthor || '강사')}</div>
+                </div>
+              ` : ''}
+              <div class="toolbar" style="margin-top:12px;">
+                <button class="btn-secondary" data-edit-id="${docSnap.id}">수정하기</button>
+              </div>
+            </div>
+          `);
+        });
+
+        myNotesList.innerHTML = items.join('');
+
+        myNotesList.querySelectorAll('[data-edit-id]').forEach((button) => {
+          button.addEventListener('click', async (event) => {
+            const noteId = event.currentTarget.dataset.editId;
+            const noteSnap = await getDoc(doc(db, 'notes', noteId));
+            const note = noteSnap.data();
+            editingNoteId = noteId;
+            weekNumberEl.value = String(note.weekNumber);
+            lessonDateEl.value = note.lessonDate || '';
+            understandingEl.value = String(note.understanding || 3);
+            topicEl.value = note.topic || '';
+            summaryEl.value = note.summary || '';
+            keyPointsEl.value = note.keyPoints || '';
+            questionsEl.value = note.questions || '';
+            homeworkEl.value = note.homework || '';
+            reviewedEl.value = String(Boolean(note.reviewed));
+            saveNoteBtn.textContent = '수정 내용 저장';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          });
+        });
+      } catch (error) {
+        console.error(error);
+        myNotesList.innerHTML = `<div class="empty">불러오기 실패: ${escapeHtml(error.message)}</div>`;
+      }
+    }
+
+    async function loadTeacherDashboard() {
+      if (!auth.currentUser || !currentUserProfile || currentUserProfile.role !== 'teacher') return;
+
+      teacherSummary.innerHTML = '<div class="empty">집계 중...</div>';
+      teacherRosterBoard.innerHTML = '<div class="empty">학생 목록을 불러오는 중...</div>';
+
+      try {
+        const targetClass = rosterClassEl.value.trim() || filterClassEl.value.trim();
+        const targetWeek = Number(filterWeekEl.value || '1');
+
+        if (!targetClass) {
+          teacherSummary.innerHTML = '<div class="empty">반 이름을 입력하세요.</div>';
+          teacherRosterBoard.innerHTML = '<div class="empty">반 이름을 입력하면 학생별 제출 현황이 표시됩니다.</div>';
+          return;
+        }
+
+        const studentQuery = query(
+          collection(db, 'users'),
+          where('role', '==', 'student'),
+          where('className', '==', targetClass)
+        );
+
+        const noteQuery = query(
+          collection(db, 'notes'),
+          where('className', '==', targetClass),
+          where('weekNumber', '==', targetWeek)
+        );
+
+        const [studentSnap, noteSnap] = await Promise.all([
+          getDocs(studentQuery),
+          getDocs(noteQuery)
+        ]);
+
+        const students = [];
+        studentSnap.forEach((docSnap) => {
+          students.push({ id: docSnap.id, ...docSnap.data() });
+        });
+
+        const notesByUserId = new Map();
+        const understandingScores = [];
+        noteSnap.forEach((docSnap) => {
+          const note = { id: docSnap.id, ...docSnap.data() };
+          notesByUserId.set(note.userId, note);
+          if (typeof note.understanding === 'number') {
+            understandingScores.push(note.understanding);
+          }
+        });
+
+        const submittedCount = notesByUserId.size;
+        const totalStudents = students.length;
+        const missingCount = Math.max(totalStudents - submittedCount, 0);
+        const submitRate = totalStudents ? Math.round((submittedCount / totalStudents) * 100) : 0;
+        const avgUnderstanding = average(understandingScores).toFixed(1);
+
+        teacherSummary.innerHTML = `
+          <div class="stat-card">
+            <h4>등록 학생 수</h4>
+            <div class="stat-value">${totalStudents}</div>
+          </div>
+          <div class="stat-card">
+            <h4>제출 인원</h4>
+            <div class="stat-value status-good">${submittedCount}</div>
+          </div>
+          <div class="stat-card">
+            <h4>미제출 인원</h4>
+            <div class="stat-value status-miss">${missingCount}</div>
+          </div>
+          <div class="stat-card">
+            <h4>제출률 / 평균 이해도</h4>
+            <div class="stat-value status-blue">${submitRate}% / ${Number.isNaN(Number(avgUnderstanding)) ? '-' : avgUnderstanding}</div>
+          </div>
+        `;
+
+        if (!students.length) {
+          teacherRosterBoard.innerHTML = '<div class="empty">해당 반의 학생 계정이 없습니다.</div>';
+          return;
+        }
+
+        const rosterHtml = students
+          .sort((a, b) => (a.name || '').localeCompare(b.name || '', 'ko'))
+          .map((student) => {
+            const note = notesByUserId.get(student.id);
+            const submitted = Boolean(note);
+            return `
+              <div class="student-card ${submitted ? 'submitted' : 'missing'}">
+                <h4>${escapeHtml(student.name || '이름 없음')}</h4>
+                <div class="student-meta">
+                  ${escapeHtml(student.email || '-')}<br>
+                  반: ${escapeHtml(student.className || '-')}
+                </div>
+                <p>
+                  상태: ${submitted ? '<strong class="status-good">제출 완료</strong>' : '<strong class="status-miss">미제출</strong>'}
+                </p>
+                ${submitted ? `
+                  <p class="small muted">
+                    주제: ${escapeHtml(note.topic || '-')}<br>
+                    이해도: ${note.understanding || '-'} / 5<br>
+                    복습 여부: ${note.reviewed ? '<span class="status-good">완료</span>' : '<span class="status-warn">미완료</span>'}<br>
+                    강사 코멘트: ${note.teacherComment ? '<span class="status-violet">있음</span>' : '없음'}
+                  </p>
+                ` : `
+                  <p class="small muted">아직 ${targetWeek}주차 노트가 없습니다.</p>
+                `}
+              </div>
+            `;
+          })
+          .join('');
+
+        teacherRosterBoard.innerHTML = rosterHtml;
+      } catch (error) {
+        console.error(error);
+        teacherSummary.innerHTML = `<div class="empty">대시보드 로드 실패: ${escapeHtml(error.message)}</div>`;
+        teacherRosterBoard.innerHTML = `<div class="empty">학생별 현황 로드 실패: ${escapeHtml(error.message)}</div>`;
+      }
+    }
+
+    async function loadAllNotesForTeacher() {
+      if (!auth.currentUser || !currentUserProfile || currentUserProfile.role !== 'teacher') return;
+
+      teacherNotesList.innerHTML = '<div class="empty">불러오는 중...</div>';
+
+      try {
+        const snapshot = await getDocs(query(collection(db, 'notes'), orderBy('weekNumber', 'desc')));
+        const filterClass = filterClassEl.value.trim().toLowerCase();
+        const filterWeek = filterWeekEl.value;
+
+        const items = [];
+        snapshot.forEach((docSnap) => {
+          const note = docSnap.data();
+          const classMatch = !filterClass || (note.className || '').toLowerCase().includes(filterClass);
+          const weekMatch = !filterWeek || String(note.weekNumber) === filterWeek;
+
+          if (!classMatch || !weekMatch) return;
+
+          items.push(`
+            <div class="note-item">
+              <h4>${note.weekNumber}주차 · ${escapeHtml(note.studentName || '이름 없음')} · ${escapeHtml(note.topic || '주제 없음')}</h4>
+              <div class="note-meta">
+                반: ${escapeHtml(note.className || '-')} · 수업일: ${escapeHtml(note.lessonDate || '-')} · 이해도: ${note.understanding || '-'} / 5 · 복습: ${note.reviewed ? '<span class="status-good">완료</span>' : '<span class="status-warn">미완료</span>'}
+              </div>
+              <p><strong>요약</strong><br>${escapeHtml(note.summary)}</p>
+              <p><strong>핵심 개념</strong><br>${escapeHtml(note.keyPoints)}</p>
+              <p><strong>질문</strong><br>${escapeHtml(note.questions)}</p>
+              <p><strong>과제/복습</strong><br>${escapeHtml(note.homework)}</p>
+              <div class="teacher-comment">
+                <strong class="status-violet">강사 코멘트</strong>
+                <div class="small muted" style="margin:6px 0 10px;">학생 화면에도 그대로 표시됩니다.</div>
+                <textarea data-comment-id="${docSnap.id}" placeholder="예: threshold와 ratio 차이를 다시 정리해보세요.">${note.teacherComment || ''}</textarea>
+                <div class="note-footer">
+                  <div class="small muted">
+                    ${note.teacherCommentAuthor ? `마지막 작성: ${escapeHtml(note.teacherCommentAuthor)}` : '아직 코멘트 없음'}
+                  </div>
+                  <button class="btn-violet" data-save-comment-id="${docSnap.id}">코멘트 저장</button>
+                </div>
+              </div>
+            </div>
+          `);
+        });
+
+        teacherNotesList.innerHTML = items.length
+          ? items.join('')
+          : '<div class="empty">조건에 맞는 노트가 없습니다.</div>';
+
+        teacherNotesList.querySelectorAll('[data-save-comment-id]').forEach((button) => {
+          button.addEventListener('click', async (event) => {
+            const noteId = event.currentTarget.dataset.saveCommentId;
+            const textarea = teacherNotesList.querySelector(`[data-comment-id="${noteId}"]`);
+            await saveTeacherComment(noteId, textarea?.value || '');
+          });
+        });
+      } catch (error) {
+        console.error(error);
+        teacherNotesList.innerHTML = `<div class="empty">불러오기 실패: ${escapeHtml(error.message)}</div>`;
+      }
+    }
+
+    function setView(profile) {
+      authSection.classList.add('hidden');
+      logoutBtn.classList.remove('hidden');
+      userInfo.textContent = `${profile.name} · ${profile.role} · ${profile.className}`;
+
+      if (profile.role === 'teacher') {
+        studentSection.classList.add('hidden');
+        teacherSection.classList.remove('hidden');
+        filterClassEl.value = profile.className || '';
+        rosterClassEl.value = profile.className || '';
+        loadTeacherDashboard();
+        loadAllNotesForTeacher();
+      } else {
+        teacherSection.classList.add('hidden');
+        studentSection.classList.remove('hidden');
+        loadMyNotes();
+      }
+    }
+
+    function setLoggedOutView() {
+      authSection.classList.remove('hidden');
+      studentSection.classList.add('hidden');
+      teacherSection.classList.add('hidden');
+      logoutBtn.classList.add('hidden');
+      userInfo.textContent = '로그인되지 않음';
+      currentUserProfile = null;
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        setLoggedOutView();
+        return;
+      }
+
+      try {
+        const profile = await getUserProfile(user.uid);
+        if (!profile) {
+          showMessage('사용자 프로필을 찾지 못했습니다.');
+          await signOut(auth);
+          return;
+        }
+        currentUserProfile = profile;
+        setView(profile);
+      } catch (error) {
+        console.error(error);
+        showMessage(`사용자 정보 로드 실패: ${error.message}`);
+      }
+    });
+
+    initWeekOptions();
+    resetForm();
+  </script>
+</body>
+</html>
