@@ -681,9 +681,8 @@
         <p class="muted">학생은 수업 내용을 정리하고, 선생님은 학생들 제출 현황을 확인하고 피드백을 작성할 수 있습니다.</p>
       </div>
       <div class="toolbar">
-        <span id="userInfo" class="badge">로그인되지 않음</span>
-        <button id="logoutBtn" class="btn-secondary hidden">로그아웃</button>
-      </div>
+  <button id="logoutBtn" class="btn-secondary hidden">로그아웃</button>
+</div>
     </div>
 
     <section id="authSection" class="hero">
@@ -850,7 +849,6 @@ const storage = getStorage(app);
     const authSection = document.getElementById('authSection');
     const studentSection = document.getElementById('studentSection');
     const teacherSection = document.getElementById('teacherSection');
-    const userInfo = document.getElementById('userInfo');
     const logoutBtn = document.getElementById('logoutBtn');
 
     const emailEl = document.getElementById('email');
@@ -1401,7 +1399,6 @@ homeworkFileStatusEl.textContent = existingHomeworkFile
     async function setView(profile) {
   authSection.classList.add('hidden');
   logoutBtn.classList.remove('hidden');
-  userInfo.textContent = `${profile.name} · ${profile.role}`;
 
   if (profile.role === 'teacher') {
   studentSection.classList.add('hidden');
@@ -1423,7 +1420,6 @@ homeworkFileStatusEl.textContent = existingHomeworkFile
       studentSection.classList.add('hidden');
       teacherSection.classList.add('hidden');
       logoutBtn.classList.add('hidden');
-      userInfo.textContent = '로그인되지 않음';
       currentUserProfile = null;
       setStudentNotice('');
     }
