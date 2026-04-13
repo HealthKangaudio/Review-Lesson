@@ -238,7 +238,17 @@
     }
 
     .student-card.submitted { border-color: rgba(34, 197, 94, 0.45); }
-    .student-card.missing { border-color: rgba(239, 68, 68, 0.45); }
+.student-card.missing { border-color: rgba(239, 68, 68, 0.45); }
+.student-card.pending { border-color: rgba(245, 158, 11, 0.45); }
+
+.notice-banner {
+  margin-bottom: 16px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  background: rgba(245, 158, 11, 0.12);
+  color: #fde68a;
+}
 
     .small { font-size: 12px; }
 
@@ -248,7 +258,141 @@
       gap: 12px;
       margin-top: 12px;
     }
+.teacher-note-card {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(15, 23, 42, 0.72);
+  padding: 16px;
+  margin-bottom: 16px;
+}
 
+.teacher-note-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.teacher-note-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.teacher-note-submeta {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.teacher-note-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.note-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  color: #e5e7eb;
+}
+
+.teacher-note-sections {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.teacher-note-block {
+  background: rgba(31, 41, 55, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+
+.teacher-note-block h5 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: #cbd5e1;
+}
+
+.teacher-note-block p {
+  margin: 0;
+  line-height: 1.6;
+  color: #f8fafc;
+}
+
+.teacher-file-box {
+  margin-top: 2px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.18);
+}
+
+.teacher-file-box a {
+  color: #7dd3fc;
+  text-decoration: none;
+}
+
+.teacher-file-box a:hover {
+  text-decoration: underline;
+}
+
+.teacher-comment-box {
+  margin-top: 4px;
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(109, 40, 217, 0.10);
+  border: 1px solid rgba(167, 139, 250, 0.28);
+}
+
+.teacher-comment-box .comment-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ddd6fe;
+  margin-bottom: 6px;
+}
+
+.teacher-comment-box .comment-help {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.teacher-comment-box textarea {
+  min-height: 110px;
+  background: rgba(17, 24, 39, 0.9);
+}
+
+.teacher-comment-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.teacher-comment-footer .small {
+  flex: 1 1 220px;
+}
+
+.teacher-comment-footer button {
+  width: auto;
+  min-width: 120px;
+}
     .teacher-comment {
       margin-top: 12px;
       padding: 12px;
@@ -262,15 +406,226 @@
     }
 
     @media (max-width: 980px) {
-      .hero,
-      .grid-2,
-      .grid-3,
-      .grid-4,
-      .summary-row,
-      .note-footer {
-        grid-template-columns: 1fr;
-      }
-    }
+  .hero,
+  .grid-2,
+  .grid-3,
+  .grid-4,
+  .summary-row,
+  .note-footer {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    font-size: 15px;
+  }
+
+  .wrap {
+    padding: 14px 12px 32px;
+  }
+
+  .topbar {
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .topbar h1 {
+    font-size: 24px;
+    line-height: 1.25;
+    margin-bottom: 6px;
+  }
+
+  .topbar .muted {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .card {
+    padding: 14px;
+    border-radius: 16px;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    align-items: flex-start;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .section-title h2 {
+    font-size: 20px;
+    line-height: 1.3;
+    margin: 0;
+  }
+
+  label {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    font-size: 16px;
+    min-height: 48px;
+    padding: 12px 14px;
+  }
+
+  textarea {
+    min-height: 140px;
+    line-height: 1.6;
+  }
+
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .toolbar > * {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+
+  .badge,
+  .pill,
+  .note-badge {
+    font-size: 12px;
+  }
+
+  .notice-banner {
+    padding: 12px 14px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .note-item,
+  .teacher-note-card {
+    padding: 14px;
+    border-radius: 16px;
+  }
+
+  .teacher-note-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+  }
+
+  .teacher-note-title {
+    font-size: 17px;
+    line-height: 1.35;
+  }
+
+  .teacher-note-submeta {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .teacher-note-badges {
+    gap: 6px;
+  }
+
+  .teacher-note-block {
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .teacher-note-block h5 {
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+
+  .teacher-note-block p {
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .teacher-file-box {
+    padding: 10px 12px;
+    line-height: 1.5;
+  }
+
+  .teacher-comment-box {
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .teacher-comment-box textarea {
+    min-height: 140px;
+  }
+
+  .teacher-comment-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .teacher-comment-footer button {
+    width: 100%;
+    min-width: 0;
+  }
+
+  #logoutBtn,
+  #loadDashboardBtn,
+  #saveNoteBtn,
+  #resetFormBtn,
+  #refreshMyNotesBtn {
+    width: 100%;
+  }
+
+  #teacherStudentFilter {
+    width: 100%;
+  }
+
+  #myNotesList .toolbar {
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .wrap {
+    padding: 12px 10px 24px;
+  }
+
+  .card {
+    padding: 12px;
+    border-radius: 14px;
+  }
+
+  .topbar h1 {
+    font-size: 22px;
+  }
+
+  .section-title h2 {
+    font-size: 18px;
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    padding: 12px;
+    border-radius: 10px;
+  }
+
+  textarea {
+    min-height: 150px;
+  }
+
+  .teacher-note-card,
+  .note-item {
+    padding: 12px;
+  }
+
+  .teacher-note-title {
+    font-size: 16px;
+  }
+}
   </style>
 </head>
 <body>
@@ -278,7 +633,7 @@
     <div class="topbar">
       <div>
         <h1>주차별 수업 복습 앱</h1>
-        <p class="muted">학생은 수업 내용을 정리하고, 강사는 제출 현황과 피드백을 주차별로 관리할 수 있습니다.</p>
+        <p class="muted">학생은 수업 내용을 정리하고, 선생님은 주차별 제출 현황을 확인하고 피드백을 작성할 수 있습니다.</p>
       </div>
       <div class="toolbar">
         <span id="userInfo" class="badge">로그인되지 않음</span>
@@ -289,7 +644,7 @@
     <section id="authSection" class="hero">
       <div class="card">
         <h2>로그인 / 회원가입</h2>
-        <p class="muted">학생 회원가입은 모두 student로 고정됩니다. 강사 계정은 따로 지정하거나 테스트용으로 아래 버튼을 사용하세요.</p>
+        <p class="muted">학생 회원가입은 모두 student로 고정됩니다. 선생님 계정은 따로 지정하거나 테스트용으로 아래 버튼을 사용하세요.</p>
         <div class="grid-2">
           <div>
             <label for="email">이메일</label>
@@ -300,48 +655,38 @@
             <input id="password" type="password" placeholder="비밀번호 입력" />
           </div>
         </div>
-        <div class="grid-2" style="margin-top:12px;">
-          <div>
-            <label for="name">이름</label>
-            <input id="name" type="text" placeholder="홍길동" />
-          </div>
-          <div>
-            <label for="className">반 이름</label>
-            <input id="className" type="text" placeholder="예: 믹싱 기초반" />
-          </div>
+        <div style="margin-top:12px;">
+          <label for="name">이름</label>
+          <input id="name" type="text" placeholder="홍길동" />
         </div>
         <div class="grid-2" style="margin-top:14px;">
           <button id="signupBtn" class="btn-primary">학생 회원가입</button>
           <button id="loginBtn" class="btn-secondary">로그인</button>
         </div>
-        <div style="margin-top:12px;">
-          <button id="createTeacherBtn" class="btn-violet">테스트용 강사 계정 만들기</button>
-        </div>
+        
       </div>
 
       <div class="card">
         <h2>이번 단계에서 추가된 기능</h2>
         <div class="pill">학생 role 고정</div>
-        <div class="pill">강사 코멘트 저장</div>
+        <div class="pill">선생님 피드백 저장</div>
         <div class="pill">학생 화면에서 피드백 확인</div>
         <div class="pill">주차별 코멘트 관리</div>
         <p class="muted" style="margin-top:12px;">
-          이제 학생은 teacher 권한으로 가입하지 못하고, 강사는 각 노트에 개별 피드백을 남길 수 있습니다.
+          이제 학생은 teacher 권한으로 가입하지 못하고, 선생님은 각 노트에 개별 피드백을 남길 수 있습니다.
         </p>
       </div>
     </section>
 
     <section id="studentSection" class="hidden">
+  <div id="studentNoticeBanner" class="notice-banner hidden"></div>
       <div class="card">
         <div class="section-title">
           <h2>학생 복습 노트 작성</h2>
           <span class="badge">student</span>
         </div>
-        <div class="grid-3">
-          <div>
-            <label for="weekNumber">주차</label>
-            <select id="weekNumber"></select>
-          </div>
+        <input id="weekNumber" type="hidden" />
+        <div class="grid-2">
           <div>
             <label for="lessonDate">수업 날짜</label>
             <input id="lessonDate" type="date" />
@@ -359,39 +704,25 @@
         </div>
 
         <div style="margin-top:12px;">
-          <label for="topic">오늘 배운 주제</label>
-          <input id="topic" type="text" placeholder="예: 컴프레서의 어택/릴리즈와 활용" />
+          <label for="summary">오늘 수업 요약</label>
+          <textarea id="summary" placeholder=""></textarea>
         </div>
 
         <div style="margin-top:12px;">
-          <label for="summary">오늘 수업 요약</label>
-          <textarea id="summary" placeholder="오늘 수업 내용을 학생이 자기 말로 정리"></textarea>
-        </div>
+  <label for="questions">헷갈리는 점 / 질문</label>
+  <textarea id="questions" placeholder=""></textarea>
+</div>
 
-        <div class="grid-2" style="margin-top:12px;">
-          <div>
-            <label for="keyPoints">핵심 개념 3가지</label>
-            <textarea id="keyPoints" placeholder="예: 1) threshold 2) ratio 3) knee"></textarea>
-          </div>
-          <div>
-            <label for="questions">헷갈리는 점 / 질문</label>
-            <textarea id="questions" placeholder="아직 이해가 덜 된 부분"></textarea>
-          </div>
-        </div>
+        <div style="margin-top:12px;">
+  <label for="homework">과제</label>
+  <textarea id="homework" placeholder=""></textarea>
+</div>
 
-        <div class="grid-2" style="margin-top:12px;">
-          <div>
-            <label for="homework">다음 수업 전 복습/과제</label>
-            <textarea id="homework" placeholder="다음 수업 전 할 일"></textarea>
-          </div>
-          <div>
-            <label for="reviewed">복습 여부</label>
-            <select id="reviewed">
-              <option value="false">아직 복습 안 함</option>
-              <option value="true">복습 완료</option>
-            </select>
-          </div>
-        </div>
+<div style="margin-top:12px;">
+  <label for="homeworkFile">과제 파일 첨부</label>
+  <input id="homeworkFile" type="file" />
+  <div id="homeworkFileStatus" class="small muted" style="margin-top:8px;">첨부 파일 없음</div>
+</div>
 
         <div class="toolbar" style="margin-top:14px;">
           <button id="saveNoteBtn" class="btn-primary">노트 저장</button>
@@ -411,52 +742,29 @@
     <section id="teacherSection" class="hidden">
       <div class="card">
         <div class="section-title">
-          <h2>강사용 관리 화면</h2>
+          <h2>선생님용 관리 화면</h2>
           <span class="badge">teacher</span>
         </div>
         <div class="toolbar">
           <div>
-            <label for="filterClass">반 필터</label>
-            <input id="filterClass" type="text" placeholder="예: 믹싱 기초반" />
-          </div>
-          <div>
-            <label for="filterWeek">주차 필터</label>
-            <select id="filterWeek"></select>
-          </div>
-          <div>
-            <label for="rosterClass">학생 명단용 반 이름</label>
-            <input id="rosterClass" type="text" placeholder="반 이름을 정확히 입력" />
+            <label for="teacherStudentFilter">학생 선택</label>
+            <select id="teacherStudentFilter">
+              <option value="">전체 학생</option>
+            </select>
           </div>
           <div>
             <label>&nbsp;</label>
-            <button id="loadDashboardBtn" class="btn-primary">대시보드 불러오기</button>
+            <button id="loadDashboardBtn" class="btn-primary">불러오기</button>
           </div>
         </div>
       </div>
 
       <div class="card">
-        <div class="section-title">
-          <h2>주차 요약</h2>
-          <span class="small muted">선택한 반 + 주차 기준</span>
-        </div>
-        <div id="teacherSummary" class="summary-row"></div>
-      </div>
-
-      <div class="card">
-        <div class="section-title">
-          <h2>학생별 제출 현황</h2>
-          <span class="small muted">초록 = 제출, 빨강 = 미제출</span>
-        </div>
-        <div id="teacherRosterBoard" class="grid-3"></div>
-      </div>
-
-      <div class="card">
-        <div class="section-title">
-          <h2>제출된 노트 상세 및 코멘트</h2>
-          <button id="loadAllNotesBtn" class="btn-secondary">상세 다시 불러오기</button>
-        </div>
-        <div id="teacherNotesList"></div>
-      </div>
+  <div class="section-title">
+    <h2 id="teacherNotesTitle">제출된 노트 상세 및 피드백</h2>
+  </div>
+  <div id="teacherNotesList"></div>
+</div>
     </section>
   </div>
 
@@ -483,21 +791,27 @@
       getDocs,
       updateDoc
     } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL
+} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
 
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyAVgnXXx3riTtpOmXVmjZzeoAaTWrsXyJ8",
-  authDomain: "lesson-review-c38f0.firebaseapp.com",
-  projectId: "lesson-review-c38f0",
-  storageBucket: "lesson-review-c38f0.firebasestorage.app",
-  messagingSenderId: "153225026603",
-  appId: "1:153225026603:web:32a9fa42f6ca1e2fa51e6e",
-  measurementId: "G-625VDFBWWD"
-};
+    const firebaseConfig = {
+      apiKey: "AIzaSyAVgnXXx3riTtpOmXVmjZzeoAaTWrsXyJ8",
+      authDomain: "lesson-review-c38f0.firebaseapp.com",
+      projectId: "lesson-review-c38f0",
+      storageBucket: "lesson-review-c38f0.firebasestorage.app",
+      messagingSenderId: "153225026603",
+      appId: "1:153225026603:web:32a9fa42f6ca1e2fa51e6e",
+      measurementId: "G-625VDFBWWD"
+    };
 
     const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
 
     const authSection = document.getElementById('authSection');
     const studentSection = document.getElementById('studentSection');
@@ -508,54 +822,38 @@ const firebaseConfig = {
     const emailEl = document.getElementById('email');
     const passwordEl = document.getElementById('password');
     const nameEl = document.getElementById('name');
-    const classNameEl = document.getElementById('className');
-
     const signupBtn = document.getElementById('signupBtn');
     const loginBtn = document.getElementById('loginBtn');
-    const createTeacherBtn = document.getElementById('createTeacherBtn');
+    
 
     const weekNumberEl = document.getElementById('weekNumber');
     const lessonDateEl = document.getElementById('lessonDate');
     const understandingEl = document.getElementById('understanding');
-    const topicEl = document.getElementById('topic');
     const summaryEl = document.getElementById('summary');
-    const keyPointsEl = document.getElementById('keyPoints');
     const questionsEl = document.getElementById('questions');
     const homeworkEl = document.getElementById('homework');
-    const reviewedEl = document.getElementById('reviewed');
     const saveNoteBtn = document.getElementById('saveNoteBtn');
     const resetFormBtn = document.getElementById('resetFormBtn');
     const refreshMyNotesBtn = document.getElementById('refreshMyNotesBtn');
     const myNotesList = document.getElementById('myNotesList');
+const studentNoticeBanner = document.getElementById('studentNoticeBanner');
 
-    const filterClassEl = document.getElementById('filterClass');
-    const filterWeekEl = document.getElementById('filterWeek');
-    const rosterClassEl = document.getElementById('rosterClass');
+    const teacherStudentFilterEl = document.getElementById('teacherStudentFilter');
     const loadDashboardBtn = document.getElementById('loadDashboardBtn');
-    const loadAllNotesBtn = document.getElementById('loadAllNotesBtn');
-    const teacherSummary = document.getElementById('teacherSummary');
-    const teacherRosterBoard = document.getElementById('teacherRosterBoard');
     const teacherNotesList = document.getElementById('teacherNotesList');
-
+const homeworkFileEl = document.getElementById('homeworkFile');
+const homeworkFileStatusEl = document.getElementById('homeworkFileStatus');
     let currentUserProfile = null;
     let editingNoteId = null;
+    let existingHomeworkFile = null;
 
     function initWeekOptions() {
       weekNumberEl.innerHTML = '';
-      filterWeekEl.innerHTML = '<option value="1">1주차</option>';
-
       for (let i = 1; i <= 16; i += 1) {
         const opt1 = document.createElement('option');
         opt1.value = String(i);
-        opt1.textContent = `${i}주차`;
+        opt1.textContent = `${i}`;
         weekNumberEl.appendChild(opt1);
-
-        if (i > 1) {
-          const opt2 = document.createElement('option');
-          opt2.value = String(i);
-          opt2.textContent = `${i}주차`;
-          filterWeekEl.appendChild(opt2);
-        }
       }
     }
 
@@ -563,19 +861,50 @@ const firebaseConfig = {
       alert(message);
     }
 
-    function resetForm() {
-      editingNoteId = null;
-      weekNumberEl.value = '1';
-      lessonDateEl.value = new Date().toISOString().slice(0, 10);
-      understandingEl.value = '3';
-      topicEl.value = '';
-      summaryEl.value = '';
-      keyPointsEl.value = '';
-      questionsEl.value = '';
-      homeworkEl.value = '';
-      reviewedEl.value = 'false';
-      saveNoteBtn.textContent = '노트 저장';
+    function calculateWeekNumberFromDate(dateString) {
+      const APP_START_DATE = '2026-03-01';
+      const start = new Date(APP_START_DATE);
+      const target = new Date(dateString);
+      if (Number.isNaN(start.getTime()) || Number.isNaN(target.getTime())) return 1;
+      const diffDays = Math.floor((target - start) / (1000 * 60 * 60 * 24));
+      const week = Math.floor(diffDays / 7) + 1;
+      return Math.max(1, Math.min(16, week));
     }
+
+    function syncWeekNumberFromLessonDate() {
+      weekNumberEl.value = String(calculateWeekNumberFromDate(lessonDateEl.value));
+    }
+function normalizeDateString(dateString = '') {
+  return String(dateString).slice(0, 10);
+}
+
+function getTodayDateString() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function setStudentNotice(message = '') {
+  if (!message) {
+    studentNoticeBanner.textContent = '';
+    studentNoticeBanner.classList.add('hidden');
+    return;
+  }
+
+  studentNoticeBanner.textContent = message;
+  studentNoticeBanner.classList.remove('hidden');
+}
+    function resetForm() {
+  editingNoteId = null;
+  existingHomeworkFile = null;
+  lessonDateEl.value = new Date().toISOString().slice(0, 10);
+  syncWeekNumberFromLessonDate();
+  understandingEl.value = '3';
+  summaryEl.value = '';
+  questionsEl.value = '';
+  homeworkEl.value = '';
+  homeworkFileEl.value = '';
+  homeworkFileStatusEl.textContent = '첨부 파일 없음';
+  saveNoteBtn.textContent = '노트 저장';
+}
 
     function escapeHtml(value = '') {
       return String(value)
@@ -586,6 +915,39 @@ const firebaseConfig = {
         .replaceAll("'", '&#039;')
         .replaceAll('\n', '<br>');
     }
+
+    function formatFileSize(bytes = 0) {
+  if (!bytes) return '-';
+  const units = ['B', 'KB', 'MB', 'GB'];
+  let size = bytes;
+  let unitIndex = 0;
+
+  while (size >= 1024 && unitIndex < units.length - 1) {
+    size /= 1024;
+    unitIndex += 1;
+  }
+
+  return `${size.toFixed(size >= 10 || unitIndex === 0 ? 0 : 1)} ${units[unitIndex]}`;
+}
+
+async function uploadHomeworkFile(userId, weekNumber, file) {
+  const safeName = `${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
+  const fileRef = ref(storage, `homeworkFiles/${userId}/${weekNumber}/${safeName}`);
+
+  const snapshot = await uploadBytes(fileRef, file, {
+    contentType: file.type || 'application/octet-stream'
+  });
+
+  const downloadURL = await getDownloadURL(snapshot.ref);
+
+  return {
+    name: file.name,
+    type: file.type || '',
+    size: file.size || 0,
+    path: snapshot.metadata.fullPath,
+    url: downloadURL
+  };
+}
 
     function average(numbers) {
       if (!numbers.length) return 0;
@@ -605,10 +967,8 @@ const firebaseConfig = {
       const email = emailEl.value.trim();
       const password = passwordEl.value.trim();
       const name = nameEl.value.trim();
-      const className = classNameEl.value.trim();
-
-      if (!email || !password || !name || !className) {
-        showMessage('이메일, 비밀번호, 이름, 반 이름을 모두 입력하세요.');
+      if (!email || !password || !name) {
+        showMessage('이메일, 비밀번호, 이름을 모두 입력하세요.');
         return;
       }
 
@@ -618,40 +978,13 @@ const firebaseConfig = {
           name,
           email,
           role: 'student',
-          className,
+          className: '기본반',
           createdAt: new Date().toISOString()
         });
         showMessage('학생 회원가입이 완료되었습니다.');
       } catch (error) {
         console.error(error);
         showMessage(`회원가입 실패: ${error.message}`);
-      }
-    });
-
-    createTeacherBtn.addEventListener('click', async () => {
-      const email = emailEl.value.trim();
-      const password = passwordEl.value.trim();
-      const name = nameEl.value.trim();
-      const className = classNameEl.value.trim();
-
-      if (!email || !password || !name || !className) {
-        showMessage('이메일, 비밀번호, 이름, 반 이름을 모두 입력하세요.');
-        return;
-      }
-
-      try {
-        const result = await createUserWithEmailAndPassword(auth, email, password);
-        await createUserProfile(result.user.uid, {
-          name,
-          email,
-          role: 'teacher',
-          className,
-          createdAt: new Date().toISOString()
-        });
-        showMessage('테스트용 강사 계정이 생성되었습니다. 실운영에서는 Firestore에서 직접 지정하는 방식을 권장합니다.');
-      } catch (error) {
-        console.error(error);
-        showMessage(`강사 계정 생성 실패: ${error.message}`);
       }
     });
 
@@ -678,26 +1011,46 @@ const firebaseConfig = {
 
     saveNoteBtn.addEventListener('click', async () => {
       if (!auth.currentUser || !currentUserProfile) return;
+const selectedFile = homeworkFileEl.files?.[0] || null;
 
+let homeworkFileData = existingHomeworkFile;
+if (selectedFile) {
+  homeworkFileStatusEl.textContent = '파일 업로드 중...';
+
+  try {
+    homeworkFileData = await uploadHomeworkFile(
+      auth.currentUser.uid,
+      Number(weekNumberEl.value),
+      selectedFile
+    );
+    homeworkFileStatusEl.textContent =
+      `첨부 완료: ${homeworkFileData.name} (${formatFileSize(homeworkFileData.size)})`;
+  } catch (fileError) {
+    console.error(fileError);
+    homeworkFileStatusEl.textContent = '파일 업로드 실패';
+    showMessage(`파일 업로드 실패: ${fileError.message}`);
+    return;
+  }
+}
       const payload = {
-        userId: auth.currentUser.uid,
-        studentName: currentUserProfile.name,
-        studentEmail: currentUserProfile.email,
-        className: currentUserProfile.className,
-        weekNumber: Number(weekNumberEl.value),
-        lessonDate: lessonDateEl.value,
-        understanding: Number(understandingEl.value),
-        topic: topicEl.value.trim(),
-        summary: summaryEl.value.trim(),
-        keyPoints: keyPointsEl.value.trim(),
-        questions: questionsEl.value.trim(),
-        homework: homeworkEl.value.trim(),
-        reviewed: reviewedEl.value === 'true',
-        updatedAt: serverTimestamp()
-      };
+  userId: auth.currentUser.uid,
+  studentName: currentUserProfile.name,
+  studentEmail: currentUserProfile.email,
+  className: currentUserProfile.className,
+  weekNumber: Number(weekNumberEl.value),
+  lessonDate: lessonDateEl.value,
+  understanding: Number(understandingEl.value),
+  topic: '수업 정리',
+  summary: summaryEl.value.trim(),
+  questions: questionsEl.value.trim(),
+  homework: homeworkEl.value.trim(),
+  homeworkFile: homeworkFileData,
+  reviewed: false,
+  updatedAt: serverTimestamp()
+};
 
-      if (!payload.topic || !payload.summary) {
-        showMessage('오늘 배운 주제와 수업 요약은 꼭 입력하세요.');
+      if (!payload.summary) {
+        showMessage('수업 요약은 꼭 입력하세요.');
         return;
       }
 
@@ -722,18 +1075,26 @@ const firebaseConfig = {
         showMessage(`저장 실패: ${error.message}`);
       }
     });
+homeworkFileEl.addEventListener('change', () => {
+  const file = homeworkFileEl.files?.[0];
+  homeworkFileStatusEl.textContent = file
+    ? `선택된 파일: ${file.name} (${formatFileSize(file.size || 0)})`
+    : (
+        existingHomeworkFile
+          ? `기존 첨부: ${existingHomeworkFile.name || '파일'} (${formatFileSize(existingHomeworkFile.size || 0)})`
+          : '첨부 파일 없음'
+      );
+});
 
     resetFormBtn.addEventListener('click', resetForm);
     refreshMyNotesBtn.addEventListener('click', loadMyNotes);
-    loadAllNotesBtn.addEventListener('click', loadAllNotesForTeacher);
     loadDashboardBtn.addEventListener('click', async () => {
-      await loadTeacherDashboard();
-      await loadAllNotesForTeacher();
-    });
-
+  await loadTeacherStudentOptions();
+  await loadAllNotesForTeacher();
+});
     async function saveTeacherComment(noteId, commentText) {
       if (!auth.currentUser || !currentUserProfile || currentUserProfile.role !== 'teacher') {
-        showMessage('강사만 코멘트를 저장할 수 있습니다.');
+        showMessage('선생님만 피드백을 저장할 수 있습니다.');
         return;
       }
 
@@ -743,11 +1104,11 @@ const firebaseConfig = {
           teacherCommentAuthor: currentUserProfile.name,
           teacherCommentUpdatedAt: serverTimestamp()
         });
-        showMessage('강사 코멘트를 저장했습니다.');
+        showMessage('선생님 피드백을 저장했습니다.');
         await loadAllNotesForTeacher();
       } catch (error) {
         console.error(error);
-        showMessage(`코멘트 저장 실패: ${error.message}`);
+        showMessage(`피드백 저장 실패: ${error.message}`);
       }
     }
 
@@ -758,38 +1119,64 @@ const firebaseConfig = {
       try {
         const q = query(
           collection(db, 'notes'),
-          where('userId', '==', auth.currentUser.uid),
-          orderBy('weekNumber', 'desc')
+          where('userId', '==', auth.currentUser.uid)
         );
         const snapshot = await getDocs(q);
 
         if (snapshot.empty) {
-          myNotesList.innerHTML = '<div class="empty">아직 작성한 노트가 없습니다.</div>';
-          return;
-        }
+  myNotesList.innerHTML = '<div class="empty">아직 작성한 노트가 없습니다.</div>';
+  setStudentNotice('오늘 수업 노트를 아직 작성하지 않았어요. 수업이 끝났다면 바로 기록해보세요.');
+  return;
+}
+
+        const docs = [];
+        snapshot.forEach((docSnap) => {
+          docs.push({ id: docSnap.id, ...docSnap.data() });
+        });
+
+        docs.sort((a, b) => {
+          if ((b.weekNumber || 0) !== (a.weekNumber || 0)) return (b.weekNumber || 0) - (a.weekNumber || 0);
+          return String(b.lessonDate || '').localeCompare(String(a.lessonDate || ''));
+        });
+
+        const todayDate = getTodayDateString();
+const hasTodayNote = docs.some((note) => normalizeDateString(note.lessonDate) === todayDate);
+
+setStudentNotice(
+  hasTodayNote
+    ? ''
+    : '오늘 수업 노트를 아직 작성하지 않았어요. 수업이 끝났다면 바로 기록해보세요.'
+);
 
         const items = [];
-        snapshot.forEach((docSnap) => {
-          const note = docSnap.data();
+        docs.forEach((note) => {
           items.push(`
             <div class="note-item">
-              <h4>${note.weekNumber}주차 · ${escapeHtml(note.topic)}</h4>
+              <h4>${escapeHtml(note.lessonDate || '수업 정리')}</h4>
               <div class="note-meta">
-                수업일: ${escapeHtml(note.lessonDate || '-')} · 이해도: ${note.understanding}/5 · 복습: ${note.reviewed ? '<span class="status-good">완료</span>' : '<span class="status-warn">미완료</span>'}
+                수업일: ${escapeHtml(note.lessonDate || '-')} · 이해도: ${note.understanding}/5
               </div>
               <p><strong>요약</strong><br>${escapeHtml(note.summary)}</p>
-              <p><strong>핵심 개념</strong><br>${escapeHtml(note.keyPoints)}</p>
               <p><strong>질문</strong><br>${escapeHtml(note.questions)}</p>
               <p><strong>과제/복습</strong><br>${escapeHtml(note.homework)}</p>
+${note.homeworkFile?.url ? `
+  <p>
+    <strong>첨부 파일</strong><br>
+    <a href="${note.homeworkFile.url}" target="_blank" rel="noopener noreferrer">
+      ${escapeHtml(note.homeworkFile.name || '파일 열기')}
+    </a>
+    <span class="small muted">(${formatFileSize(note.homeworkFile.size || 0)})</span>
+  </p>
+` : ''}
               ${note.teacherComment ? `
                 <div class="teacher-comment">
-                  <strong class="status-violet">강사 피드백</strong><br>
+                  <strong class="status-violet">선생님 피드백</strong>
                   <div style="margin-top:8px;">${escapeHtml(note.teacherComment)}</div>
-                  <div class="small muted" style="margin-top:8px;">작성자: ${escapeHtml(note.teacherCommentAuthor || '강사')}</div>
+                  <div class="small muted" style="margin-top:8px;">작성자: ${escapeHtml(note.teacherCommentAuthor || '선생님')}</div>
                 </div>
               ` : ''}
               <div class="toolbar" style="margin-top:12px;">
-                <button class="btn-secondary" data-edit-id="${docSnap.id}">수정하기</button>
+                <button class="btn-secondary" data-edit-id="${note.id}">수정하기</button>
               </div>
             </div>
           `);
@@ -803,15 +1190,17 @@ const firebaseConfig = {
             const noteSnap = await getDoc(doc(db, 'notes', noteId));
             const note = noteSnap.data();
             editingNoteId = noteId;
-            weekNumberEl.value = String(note.weekNumber);
             lessonDateEl.value = note.lessonDate || '';
+            syncWeekNumberFromLessonDate();
             understandingEl.value = String(note.understanding || 3);
-            topicEl.value = note.topic || '';
             summaryEl.value = note.summary || '';
-            keyPointsEl.value = note.keyPoints || '';
             questionsEl.value = note.questions || '';
             homeworkEl.value = note.homework || '';
-            reviewedEl.value = String(Boolean(note.reviewed));
+existingHomeworkFile = note.homeworkFile || null;
+homeworkFileEl.value = '';
+homeworkFileStatusEl.textContent = existingHomeworkFile
+  ? `기존 첨부: ${existingHomeworkFile.name || '파일'} (${formatFileSize(existingHomeworkFile.size || 0)})`
+  : '첨부 파일 없음';
             saveNoteBtn.textContent = '수정 내용 저장';
             window.scrollTo({ top: 0, behavior: 'smooth' });
           });
@@ -821,201 +1210,178 @@ const firebaseConfig = {
         myNotesList.innerHTML = `<div class="empty">불러오기 실패: ${escapeHtml(error.message)}</div>`;
       }
     }
+    async function loadTeacherStudentOptions() {
+  if (!auth.currentUser || !currentUserProfile || currentUserProfile.role !== 'teacher') return;
 
-    async function loadTeacherDashboard() {
-      if (!auth.currentUser || !currentUserProfile || currentUserProfile.role !== 'teacher') return;
+  const previousValue = teacherStudentFilterEl.value;
 
-      teacherSummary.innerHTML = '<div class="empty">집계 중...</div>';
-      teacherRosterBoard.innerHTML = '<div class="empty">학생 목록을 불러오는 중...</div>';
+  try {
+    const snapshot = await getDocs(query(collection(db, 'notes'), orderBy('weekNumber', 'desc')));
 
-      try {
-        const targetClass = rosterClassEl.value.trim() || filterClassEl.value.trim();
-        const targetWeek = Number(filterWeekEl.value || '1');
+    const notes = [];
+    snapshot.forEach((docSnap) => {
+      notes.push({ id: docSnap.id, ...docSnap.data() });
+    });
 
-        if (!targetClass) {
-          teacherSummary.innerHTML = '<div class="empty">반 이름을 입력하세요.</div>';
-          teacherRosterBoard.innerHTML = '<div class="empty">반 이름을 입력하면 학생별 제출 현황이 표시됩니다.</div>';
-          return;
-        }
+    const studentMap = new Map();
 
-        const studentQuery = query(
-          collection(db, 'users'),
-          where('role', '==', 'student'),
-          where('className', '==', targetClass)
-        );
+    notes.forEach((note) => {
+      if (!note.userId) return;
 
-        const noteQuery = query(
-          collection(db, 'notes'),
-          where('className', '==', targetClass),
-          where('weekNumber', '==', targetWeek)
-        );
-
-        const [studentSnap, noteSnap] = await Promise.all([
-          getDocs(studentQuery),
-          getDocs(noteQuery)
-        ]);
-
-        const students = [];
-        studentSnap.forEach((docSnap) => {
-          students.push({ id: docSnap.id, ...docSnap.data() });
+      if (!studentMap.has(note.userId)) {
+        studentMap.set(note.userId, {
+          id: note.userId,
+          name: note.studentName || note.studentEmail || '이름 없음'
         });
-
-        const notesByUserId = new Map();
-        const understandingScores = [];
-        noteSnap.forEach((docSnap) => {
-          const note = { id: docSnap.id, ...docSnap.data() };
-          notesByUserId.set(note.userId, note);
-          if (typeof note.understanding === 'number') {
-            understandingScores.push(note.understanding);
-          }
-        });
-
-        const submittedCount = notesByUserId.size;
-        const totalStudents = students.length;
-        const missingCount = Math.max(totalStudents - submittedCount, 0);
-        const submitRate = totalStudents ? Math.round((submittedCount / totalStudents) * 100) : 0;
-        const avgUnderstanding = average(understandingScores).toFixed(1);
-
-        teacherSummary.innerHTML = `
-          <div class="stat-card">
-            <h4>등록 학생 수</h4>
-            <div class="stat-value">${totalStudents}</div>
-          </div>
-          <div class="stat-card">
-            <h4>제출 인원</h4>
-            <div class="stat-value status-good">${submittedCount}</div>
-          </div>
-          <div class="stat-card">
-            <h4>미제출 인원</h4>
-            <div class="stat-value status-miss">${missingCount}</div>
-          </div>
-          <div class="stat-card">
-            <h4>제출률 / 평균 이해도</h4>
-            <div class="stat-value status-blue">${submitRate}% / ${Number.isNaN(Number(avgUnderstanding)) ? '-' : avgUnderstanding}</div>
-          </div>
-        `;
-
-        if (!students.length) {
-          teacherRosterBoard.innerHTML = '<div class="empty">해당 반의 학생 계정이 없습니다.</div>';
-          return;
-        }
-
-        const rosterHtml = students
-          .sort((a, b) => (a.name || '').localeCompare(b.name || '', 'ko'))
-          .map((student) => {
-            const note = notesByUserId.get(student.id);
-            const submitted = Boolean(note);
-            return `
-              <div class="student-card ${submitted ? 'submitted' : 'missing'}">
-                <h4>${escapeHtml(student.name || '이름 없음')}</h4>
-                <div class="student-meta">
-                  ${escapeHtml(student.email || '-')}<br>
-                  반: ${escapeHtml(student.className || '-')}
-                </div>
-                <p>
-                  상태: ${submitted ? '<strong class="status-good">제출 완료</strong>' : '<strong class="status-miss">미제출</strong>'}
-                </p>
-                ${submitted ? `
-                  <p class="small muted">
-                    주제: ${escapeHtml(note.topic || '-')}<br>
-                    이해도: ${note.understanding || '-'} / 5<br>
-                    복습 여부: ${note.reviewed ? '<span class="status-good">완료</span>' : '<span class="status-warn">미완료</span>'}<br>
-                    강사 코멘트: ${note.teacherComment ? '<span class="status-violet">있음</span>' : '없음'}
-                  </p>
-                ` : `
-                  <p class="small muted">아직 ${targetWeek}주차 노트가 없습니다.</p>
-                `}
-              </div>
-            `;
-          })
-          .join('');
-
-        teacherRosterBoard.innerHTML = rosterHtml;
-      } catch (error) {
-        console.error(error);
-        teacherSummary.innerHTML = `<div class="empty">대시보드 로드 실패: ${escapeHtml(error.message)}</div>`;
-        teacherRosterBoard.innerHTML = `<div class="empty">학생별 현황 로드 실패: ${escapeHtml(error.message)}</div>`;
       }
-    }
+    });
 
-    async function loadAllNotesForTeacher() {
-      if (!auth.currentUser || !currentUserProfile || currentUserProfile.role !== 'teacher') return;
+    const students = Array.from(studentMap.values()).sort((a, b) =>
+      (a.name || '').localeCompare(b.name || '', 'ko')
+    );
 
-      teacherNotesList.innerHTML = '<div class="empty">불러오는 중...</div>';
+    teacherStudentFilterEl.innerHTML = '<option value="">전체 학생</option>';
 
-      try {
-        const snapshot = await getDocs(query(collection(db, 'notes'), orderBy('weekNumber', 'desc')));
-        const filterClass = filterClassEl.value.trim().toLowerCase();
-        const filterWeek = filterWeekEl.value;
+    students.forEach((student) => {
+      const option = document.createElement('option');
+      option.value = student.id;
+      option.textContent = student.name;
+      teacherStudentFilterEl.appendChild(option);
+    });
 
-        const items = [];
-        snapshot.forEach((docSnap) => {
-          const note = docSnap.data();
-          const classMatch = !filterClass || (note.className || '').toLowerCase().includes(filterClass);
-          const weekMatch = !filterWeek || String(note.weekNumber) === filterWeek;
+    const stillExists = students.some((student) => student.id === previousValue);
+    teacherStudentFilterEl.value = stillExists ? previousValue : '';
+  } catch (error) {
+    console.error('학생 선택 목록 로드 실패:', error);
+  }
+}
 
-          if (!classMatch || !weekMatch) return;
+   async function loadAllNotesForTeacher() {
+  if (!auth.currentUser || !currentUserProfile || currentUserProfile.role !== 'teacher') return;
 
-          items.push(`
-            <div class="note-item">
-              <h4>${note.weekNumber}주차 · ${escapeHtml(note.studentName || '이름 없음')} · ${escapeHtml(note.topic || '주제 없음')}</h4>
-              <div class="note-meta">
-                반: ${escapeHtml(note.className || '-')} · 수업일: ${escapeHtml(note.lessonDate || '-')} · 이해도: ${note.understanding || '-'} / 5 · 복습: ${note.reviewed ? '<span class="status-good">완료</span>' : '<span class="status-warn">미완료</span>'}
-              </div>
-              <p><strong>요약</strong><br>${escapeHtml(note.summary)}</p>
-              <p><strong>핵심 개념</strong><br>${escapeHtml(note.keyPoints)}</p>
-              <p><strong>질문</strong><br>${escapeHtml(note.questions)}</p>
-              <p><strong>과제/복습</strong><br>${escapeHtml(note.homework)}</p>
-              <div class="teacher-comment">
-                <strong class="status-violet">강사 코멘트</strong>
-                <div class="small muted" style="margin:6px 0 10px;">학생 화면에도 그대로 표시됩니다.</div>
-                <textarea data-comment-id="${docSnap.id}" placeholder="예: threshold와 ratio 차이를 다시 정리해보세요.">${note.teacherComment || ''}</textarea>
-                <div class="note-footer">
-                  <div class="small muted">
-                    ${note.teacherCommentAuthor ? `마지막 작성: ${escapeHtml(note.teacherCommentAuthor)}` : '아직 코멘트 없음'}
-                  </div>
-                  <button class="btn-violet" data-save-comment-id="${docSnap.id}">코멘트 저장</button>
-                </div>
-              </div>
+  const selectedStudentId = teacherStudentFilterEl.value;
+
+  teacherNotesList.innerHTML = '<div class="empty">불러오는 중...</div>';
+
+  try {
+    const snapshot = await getDocs(
+      query(collection(db, 'notes'), orderBy('weekNumber', 'desc'))
+    );
+
+    const notes = [];
+    snapshot.forEach((docSnap) => {
+      notes.push({ id: docSnap.id, ...docSnap.data() });
+    });
+
+    const filteredNotes = selectedStudentId
+      ? notes.filter((note) => note.userId === selectedStudentId)
+      : notes;
+
+    filteredNotes.sort((a, b) => {
+      if ((b.weekNumber || 0) !== (a.weekNumber || 0)) {
+        return (b.weekNumber || 0) - (a.weekNumber || 0);
+      }
+      return String(b.lessonDate || '').localeCompare(String(a.lessonDate || ''));
+    });
+
+    const items = filteredNotes.map((note) => `
+      <div class="teacher-note-card">
+        <div class="teacher-note-header">
+          <div>
+            <h4 class="teacher-note-title">
+              ${escapeHtml(note.studentName || '이름 없음')}
+            </h4>
+            <div class="teacher-note-submeta">
+  수업일: ${escapeHtml(note.lessonDate || '-')}
+</div>
+          </div>
+
+          <div class="teacher-note-badges">
+  <span class="note-badge">이해도 ${note.understanding || '-'}/5</span>
+</div>
+        </div>
+
+        <div class="teacher-note-sections">
+          <div class="teacher-note-block">
+            <h5>오늘 수업 요약</h5>
+            <p>${escapeHtml(note.summary || '-')}</p>
+          </div>
+
+          <div class="teacher-note-block">
+            <h5>헷갈리는 점 / 질문</h5>
+            <p>${escapeHtml(note.questions || '-')}</p>
+          </div>
+
+          <div class="teacher-note-block">
+            <h5>과제 / 복습</h5>
+            <p>${escapeHtml(note.homework || '-')}</p>
+          </div>
+
+          ${note.homeworkFile?.url ? `
+            <div class="teacher-file-box">
+              <strong>첨부 파일</strong><br>
+              <a href="${note.homeworkFile.url}" target="_blank" rel="noopener noreferrer">
+                ${escapeHtml(note.homeworkFile.name || '파일 열기')}
+              </a>
+              <span class="small muted">(${formatFileSize(note.homeworkFile.size || 0)})</span>
             </div>
-          `);
-        });
+          ` : ''}
+        </div>
 
-        teacherNotesList.innerHTML = items.length
-          ? items.join('')
-          : '<div class="empty">조건에 맞는 노트가 없습니다.</div>';
+        <div class="teacher-comment-box">
+          <div class="comment-title">선생님 피드백</div>
+          <div class="comment-help">여기에 작성한 내용은 학생 화면에도 그대로 표시됩니다.</div>
 
-        teacherNotesList.querySelectorAll('[data-save-comment-id]').forEach((button) => {
-          button.addEventListener('click', async (event) => {
-            const noteId = event.currentTarget.dataset.saveCommentId;
-            const textarea = teacherNotesList.querySelector(`[data-comment-id="${noteId}"]`);
-            await saveTeacherComment(noteId, textarea?.value || '');
-          });
-        });
-      } catch (error) {
-        console.error(error);
-        teacherNotesList.innerHTML = `<div class="empty">불러오기 실패: ${escapeHtml(error.message)}</div>`;
-      }
-    }
+          <textarea data-comment-id="${note.id}" placeholder="예: 다음 시간 전까지 템포를 더 안정적으로 맞춰 보세요.">${note.teacherComment || ''}</textarea>
 
-    function setView(profile) {
-      authSection.classList.add('hidden');
-      logoutBtn.classList.remove('hidden');
-      userInfo.textContent = `${profile.name} · ${profile.role} · ${profile.className}`;
+          <div class="teacher-comment-footer">
+            <div class="small muted">
+              ${note.teacherCommentAuthor
+                ? `마지막 작성: ${escapeHtml(note.teacherCommentAuthor)}`
+                : '아직 코멘트 없음'}
+            </div>
+            <button class="btn-violet" data-save-comment-id="${note.id}">코멘트 저장</button>
+          </div>
+        </div>
+      </div>
+    `);
 
-      if (profile.role === 'teacher') {
-        studentSection.classList.add('hidden');
-        teacherSection.classList.remove('hidden');
-        filterClassEl.value = profile.className || '';
-        rosterClassEl.value = profile.className || '';
-        loadTeacherDashboard();
-        loadAllNotesForTeacher();
-      } else {
-        teacherSection.classList.add('hidden');
-        studentSection.classList.remove('hidden');
-        loadMyNotes();
-      }
-    }
+    teacherNotesList.innerHTML = items.length
+      ? items.join('')
+      : '<div class="empty">조건에 맞는 노트가 없습니다.</div>';
+
+    teacherNotesList.querySelectorAll('[data-save-comment-id]').forEach((button) => {
+      button.addEventListener('click', async (event) => {
+        const noteId = event.currentTarget.dataset.saveCommentId;
+        const textarea = teacherNotesList.querySelector(`[data-comment-id="${noteId}"]`);
+        await saveTeacherComment(noteId, textarea?.value || '');
+      });
+    });
+  } catch (error) {
+    console.error(error);
+    teacherNotesList.innerHTML = `<div class="empty">불러오기 실패: ${escapeHtml(error.message)}</div>`;
+  }
+}
+
+    async function setView(profile) {
+  authSection.classList.add('hidden');
+  logoutBtn.classList.remove('hidden');
+  userInfo.textContent = `${profile.name} · ${profile.role}`;
+
+  if (profile.role === 'teacher') {
+  studentSection.classList.add('hidden');
+  teacherSection.classList.remove('hidden');
+
+  await loadTeacherStudentOptions();
+  await loadAllNotesForTeacher();
+
+  } else {
+    teacherSection.classList.add('hidden');
+    studentSection.classList.remove('hidden');
+    setStudentNotice('');
+    loadMyNotes();
+  }
+}
 
     function setLoggedOutView() {
       authSection.classList.remove('hidden');
@@ -1024,6 +1390,7 @@ const firebaseConfig = {
       logoutBtn.classList.add('hidden');
       userInfo.textContent = '로그인되지 않음';
       currentUserProfile = null;
+      setStudentNotice('');
     }
 
     onAuthStateChanged(auth, async (user) => {
@@ -1040,7 +1407,7 @@ const firebaseConfig = {
           return;
         }
         currentUserProfile = profile;
-        setView(profile);
+        await setView(profile);
       } catch (error) {
         console.error(error);
         showMessage(`사용자 정보 로드 실패: ${error.message}`);
@@ -1048,6 +1415,7 @@ const firebaseConfig = {
     });
 
     initWeekOptions();
+    lessonDateEl.addEventListener('change', syncWeekNumberFromLessonDate);
     resetForm();
   </script>
 </body>
