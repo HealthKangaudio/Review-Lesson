@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>주차별 수업 복습 앱 MVP++</title>
+  <title>수업 요약 노트</title>
   <style>
     :root {
       --bg: #0f172a;
@@ -632,8 +632,8 @@
   <div class="wrap">
     <div class="topbar">
       <div>
-        <h1>주차별 수업 복습 앱</h1>
-        <p class="muted">학생은 수업 내용을 정리하고, 선생님은 주차별 제출 현황을 확인하고 피드백을 작성할 수 있습니다.</p>
+        <h1>수업 요약 노트</h1>
+        <p class="muted">학생은 수업 내용을 정리하고, 선생님은 학생들 제출 현황을 확인하고 피드백을 작성할 수 있습니다.</p>
       </div>
       <div class="toolbar">
         <span id="userInfo" class="badge">로그인되지 않음</span>
@@ -644,7 +644,6 @@
     <section id="authSection" class="hero">
       <div class="card">
         <h2>로그인 / 회원가입</h2>
-        <p class="muted">학생 회원가입은 모두 student로 고정됩니다. 선생님 계정은 따로 지정하거나 테스트용으로 아래 버튼을 사용하세요.</p>
         <div class="grid-2">
           <div>
             <label for="email">이메일</label>
@@ -666,16 +665,6 @@
         
       </div>
 
-      <div class="card">
-        <h2>이번 단계에서 추가된 기능</h2>
-        <div class="pill">학생 role 고정</div>
-        <div class="pill">선생님 피드백 저장</div>
-        <div class="pill">학생 화면에서 피드백 확인</div>
-        <div class="pill">주차별 코멘트 관리</div>
-        <p class="muted" style="margin-top:12px;">
-          이제 학생은 teacher 권한으로 가입하지 못하고, 선생님은 각 노트에 개별 피드백을 남길 수 있습니다.
-        </p>
-      </div>
     </section>
 
     <section id="studentSection" class="hidden">
