@@ -8,6 +8,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>수업 요약 노트</title>
+  <title>레슨 복습 노트</title>
+<meta name="theme-color" content="#0f172a" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="레슨 복습 노트" />
+<meta name="description" content="수업 내용을 기록하고 피드백을 확인하는 레슨 복습 노트 앱" />
+
+<link rel="manifest" href="./manifest.webmanifest" />
+<link rel="apple-touch-icon" href="./icons/icon-192.png" />
+
+<meta property="og:title" content="레슨 복습 노트" />
+<meta property="og:description" content="수업 내용을 기록하고 피드백을 확인하는 레슨 복습 노트 앱" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://healthkangaudio.github.io/Review-Lesson/" />
   <style>
     :root {
       --bg: #0f172a;
@@ -671,6 +685,43 @@
     font-weight: 700;
   }
 }
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.pagination button {
+  width: auto;
+  min-width: 44px;
+  padding: 10px 12px;
+}
+
+.pagination .page-info {
+  color: var(--muted);
+  font-size: 14px;
+  padding: 0 6px;
+}
+
+.pagination .active-page {
+  background: var(--accent);
+  color: #052e16;
+  border: none;
+}
+
+@media (max-width: 768px) {
+  .pagination {
+    gap: 6px;
+  }
+
+  .pagination button {
+    min-width: 40px;
+    padding: 10px;
+  }
+}
   </style>
 </head>
 <body>
@@ -797,6 +848,7 @@
     <h2 id="teacherNotesTitle">제출된 노트 상세 및 피드백</h2>
   </div>
   <div id="teacherNotesList"></div>
+  <div id="teacherPagination" class="pagination hidden"></div>
 </div>
     </section>
   </div>
@@ -857,7 +909,8 @@ const storage = getStorage(app);
     const signupBtn = document.getElementById('signupBtn');
     const loginBtn = document.getElementById('loginBtn');
     
-
+let teacherCurrentPage = 1;
+const TEACHER_NOTES_PER_PAGE = 10;
     const weekNumberEl = document.getElementById('weekNumber');
     const lessonDateEl = document.getElementById('lessonDate');
     const understandingEl = document.getElementById('understanding');
@@ -869,7 +922,7 @@ const storage = getStorage(app);
     const refreshMyNotesBtn = document.getElementById('refreshMyNotesBtn');
     const myNotesList = document.getElementById('myNotesList');
 const studentNoticeBanner = document.getElementById('studentNoticeBanner');
-
+const teacherPagination = document.getElementById('teacherPagination');
     const teacherStudentFilterEl = document.getElementById('teacherStudentFilter');
     const loadDashboardBtn = document.getElementById('loadDashboardBtn');
     const teacherNotesList = document.getElementById('teacherNotesList');
@@ -1120,7 +1173,8 @@ homeworkFileEl.addEventListener('change', () => {
 
     resetFormBtn.addEventListener('click', resetForm);
     refreshMyNotesBtn.addEventListener('click', loadMyNotes);
-    loadDashboardBtn.addEventListener('click', async () => {
+   loadDashboardBtn.addEventListener('click', async () => {
+  teacherCurrentPage = 1;
   await loadTeacherStudentOptions();
   await loadAllNotesForTeacher();
 });
@@ -1288,12 +1342,14 @@ homeworkFileStatusEl.textContent = existingHomeworkFile
   }
 }
 
-   async function loadAllNotesForTeacher() {
+async function loadAllNotesForTeacher() {
   if (!auth.currentUser || !currentUserProfile || currentUserProfile.role !== 'teacher') return;
 
   const selectedStudentId = teacherStudentFilterEl.value;
 
   teacherNotesList.innerHTML = '<div class="empty">불러오는 중...</div>';
+  teacherPagination.classList.add('hidden');
+  teacherPagination.innerHTML = '';
 
   try {
     const snapshot = await getDocs(
@@ -1316,7 +1372,17 @@ homeworkFileStatusEl.textContent = existingHomeworkFile
       return String(b.lessonDate || '').localeCompare(String(a.lessonDate || ''));
     });
 
-    const items = filteredNotes.map((note) => `
+    const totalPages = Math.max(1, Math.ceil(filteredNotes.length / TEACHER_NOTES_PER_PAGE));
+
+    if (teacherCurrentPage > totalPages) {
+      teacherCurrentPage = totalPages;
+    }
+
+    const startIndex = (teacherCurrentPage - 1) * TEACHER_NOTES_PER_PAGE;
+    const endIndex = startIndex + TEACHER_NOTES_PER_PAGE;
+    const pagedNotes = filteredNotes.slice(startIndex, endIndex);
+
+    const items = pagedNotes.map((note) => `
       <div class="teacher-note-card">
         <div class="teacher-note-header">
           <div>
@@ -1324,22 +1390,21 @@ homeworkFileStatusEl.textContent = existingHomeworkFile
               ${escapeHtml(note.studentName || '이름 없음')}
             </h4>
             <div class="teacher-note-submeta">
-  수업일: ${escapeHtml(note.lessonDate || '-')}
-</div>
+              수업일: ${escapeHtml(note.lessonDate || '-')}
+            </div>
           </div>
 
           <div class="teacher-note-badges">
-  <span class="note-badge">이해도 ${note.understanding || '-'}/5</span>
-</div>
+            <span class="note-badge">이해도 ${note.understanding || '-'}/5</span>
+          </div>
         </div>
 
         <div class="teacher-note-summary">
-  <h5>오늘 수업 요약</h5>
-  <p>${escapeHtml(note.summary || '-')}</p>
-</div>
+          <h5>오늘 수업 요약</h5>
+          <p>${escapeHtml(note.summary || '-')}</p>
+        </div>
 
-<div class="teacher-note-sections">
-
+        <div class="teacher-note-sections">
           <div class="teacher-note-block">
             <h5>헷갈리는 점 / 질문</h5>
             <p>${escapeHtml(note.questions || '-')}</p>
@@ -1365,7 +1430,7 @@ homeworkFileStatusEl.textContent = existingHomeworkFile
           <div class="comment-title">선생님 피드백</div>
           <div class="comment-help">여기에 작성한 내용은 학생 화면에도 그대로 표시됩니다.</div>
 
-          <textarea data-comment-id="${note.id}" placeholder="예: 다음 시간 전까지 템포를 더 안정적으로 맞춰 보세요.">${note.teacherComment || ''}</textarea>
+          <textarea data-comment-id="${note.id}" placeholder="피드백을 입력하세요.">${note.teacherComment || ''}</textarea>
 
           <div class="teacher-comment-footer">
             <div class="small muted">
@@ -1390,9 +1455,40 @@ homeworkFileStatusEl.textContent = existingHomeworkFile
         await saveTeacherComment(noteId, textarea?.value || '');
       });
     });
+
+    if (filteredNotes.length > 0) {
+      teacherPagination.classList.remove('hidden');
+
+      const prevDisabled = teacherCurrentPage === 1 ? 'disabled' : '';
+      const nextDisabled = teacherCurrentPage === totalPages ? 'disabled' : '';
+
+      teacherPagination.innerHTML = `
+        <button class="btn-secondary" data-page-action="prev" ${prevDisabled}>이전</button>
+        <span class="page-info">${teacherCurrentPage} / ${totalPages}</span>
+        <button class="btn-secondary" data-page-action="next" ${nextDisabled}>다음</button>
+      `;
+
+      teacherPagination.querySelector('[data-page-action="prev"]')?.addEventListener('click', async () => {
+        if (teacherCurrentPage > 1) {
+          teacherCurrentPage -= 1;
+          await loadAllNotesForTeacher();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+
+      teacherPagination.querySelector('[data-page-action="next"]')?.addEventListener('click', async () => {
+        if (teacherCurrentPage < totalPages) {
+          teacherCurrentPage += 1;
+          await loadAllNotesForTeacher();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+    }
   } catch (error) {
     console.error(error);
     teacherNotesList.innerHTML = `<div class="empty">불러오기 실패: ${escapeHtml(error.message)}</div>`;
+    teacherPagination.classList.add('hidden');
+    teacherPagination.innerHTML = '';
   }
 }
 
