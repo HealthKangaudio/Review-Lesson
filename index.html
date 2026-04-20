@@ -8,7 +8,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>수업 요약 노트</title>
-  <title>레슨 복습 노트</title>
 <meta name="theme-color" content="#0f172a" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -722,11 +721,74 @@
     padding: 10px;
   }
 }
+.install-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  border-radius: 16px;
+  background: rgba(56, 189, 248, 0.10);
+  border: 1px solid rgba(56, 189, 248, 0.22);
+}
+
+.install-banner-text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.install-banner-text strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.install-banner-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.install-banner-actions button {
+  width: auto;
+  min-width: 100px;
+}
+
+@media (max-width: 768px) {
+  .install-banner {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 12px 14px;
+  }
+
+  .install-banner-actions {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .install-banner-actions button {
+    width: 100%;
+    min-width: 0;
+  }
+}
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="topbar">
+      <div id="installBanner" class="install-banner hidden">
+  <div class="install-banner-text">
+    <strong>앱처럼 설치해서 사용해보세요.</strong>
+    <div class="small">홈 화면에 추가하면 더 편하게 열 수 있어요.</div>
+  </div>
+  <div class="install-banner-actions">
+    <button id="installAppBtn" class="btn-primary hidden" type="button">앱 설치</button>
+    <button id="iosGuideBtn" class="btn-secondary hidden" type="button">아이폰 설치 방법</button>
+    <button id="dismissInstallBannerBtn" class="btn-secondary" type="button">닫기</button>
+  </div>
+</div>
       <div>
         <h1>수업 요약 노트</h1>
         <p class="muted">학생은 수업 내용을 정리하고, 선생님은 학생들 제출 현황을 확인하고 피드백을 작성할 수 있습니다.</p>
@@ -899,39 +961,118 @@ const db = getFirestore(app);
 const storage = getStorage(app);
 
     const authSection = document.getElementById('authSection');
-    const studentSection = document.getElementById('studentSection');
-    const teacherSection = document.getElementById('teacherSection');
-    const logoutBtn = document.getElementById('logoutBtn');
+const studentSection = document.getElementById('studentSection');
+const teacherSection = document.getElementById('teacherSection');
+const logoutBtn = document.getElementById('logoutBtn');
 
-    const emailEl = document.getElementById('email');
-    const passwordEl = document.getElementById('password');
-    const nameEl = document.getElementById('name');
-    const signupBtn = document.getElementById('signupBtn');
-    const loginBtn = document.getElementById('loginBtn');
-    
+const installBanner = document.getElementById('installBanner');
+const installAppBtn = document.getElementById('installAppBtn');
+const iosGuideBtn = document.getElementById('iosGuideBtn');
+const dismissInstallBannerBtn = document.getElementById('dismissInstallBannerBtn');
+let deferredInstallPrompt = null;
+
+function isIosDevice() {
+  return /iphone|ipad|ipod/i.test(window.navigator.userAgent);
+}
+
+function isInStandaloneMode() {
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+}
+
+function shouldHideInstallBanner() {
+  return localStorage.getItem('installBannerDismissed') === 'true';
+}
+
+function updateInstallBanner() {
+  if (!installBanner) return;
+
+  if (isInStandaloneMode() || shouldHideInstallBanner()) {
+    installBanner.classList.add('hidden');
+    installAppBtn?.classList.add('hidden');
+    iosGuideBtn?.classList.add('hidden');
+    return;
+  }
+
+  installBanner.classList.remove('hidden');
+
+  if (deferredInstallPrompt) {
+    installAppBtn?.classList.remove('hidden');
+  } else {
+    installAppBtn?.classList.add('hidden');
+  }
+
+  if (isIosDevice()) {
+    iosGuideBtn?.classList.remove('hidden');
+  } else {
+    iosGuideBtn?.classList.add('hidden');
+  }
+
+  if (!deferredInstallPrompt && !isIosDevice()) {
+    installBanner.classList.add('hidden');
+  }
+}
+const emailEl = document.getElementById('email');
+const passwordEl = document.getElementById('password');
+const nameEl = document.getElementById('name');
+const signupBtn = document.getElementById('signupBtn');
+const loginBtn = document.getElementById('loginBtn');
+
 let teacherCurrentPage = 1;
 const TEACHER_NOTES_PER_PAGE = 10;
-    const weekNumberEl = document.getElementById('weekNumber');
-    const lessonDateEl = document.getElementById('lessonDate');
-    const understandingEl = document.getElementById('understanding');
-    const summaryEl = document.getElementById('summary');
-    const questionsEl = document.getElementById('questions');
-    const homeworkEl = document.getElementById('homework');
-    const saveNoteBtn = document.getElementById('saveNoteBtn');
-    const resetFormBtn = document.getElementById('resetFormBtn');
-    const refreshMyNotesBtn = document.getElementById('refreshMyNotesBtn');
-    const myNotesList = document.getElementById('myNotesList');
+const weekNumberEl = document.getElementById('weekNumber');
+const lessonDateEl = document.getElementById('lessonDate');
+const understandingEl = document.getElementById('understanding');
+const summaryEl = document.getElementById('summary');
+const questionsEl = document.getElementById('questions');
+const homeworkEl = document.getElementById('homework');
+const saveNoteBtn = document.getElementById('saveNoteBtn');
+const resetFormBtn = document.getElementById('resetFormBtn');
+const refreshMyNotesBtn = document.getElementById('refreshMyNotesBtn');
+const myNotesList = document.getElementById('myNotesList');
 const studentNoticeBanner = document.getElementById('studentNoticeBanner');
 const teacherPagination = document.getElementById('teacherPagination');
-    const teacherStudentFilterEl = document.getElementById('teacherStudentFilter');
-    const loadDashboardBtn = document.getElementById('loadDashboardBtn');
-    const teacherNotesList = document.getElementById('teacherNotesList');
+const teacherStudentFilterEl = document.getElementById('teacherStudentFilter');
+const loadDashboardBtn = document.getElementById('loadDashboardBtn');
+const teacherNotesList = document.getElementById('teacherNotesList');
 const homeworkFileEl = document.getElementById('homeworkFile');
 const homeworkFileStatusEl = document.getElementById('homeworkFileStatus');
     let currentUserProfile = null;
     let editingNoteId = null;
     let existingHomeworkFile = null;
+window.addEventListener('beforeinstallprompt', (event) => {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+  updateInstallBanner();
+});
 
+window.addEventListener('appinstalled', () => {
+  deferredInstallPrompt = null;
+  localStorage.removeItem('installBannerDismissed');
+  updateInstallBanner();
+});
+installAppBtn?.addEventListener('click', async () => {
+  if (!deferredInstallPrompt) return;
+
+  deferredInstallPrompt.prompt();
+
+  try {
+    await deferredInstallPrompt.userChoice;
+  } catch (error) {
+    console.error(error);
+  }
+
+  deferredInstallPrompt = null;
+  updateInstallBanner();
+});
+
+iosGuideBtn?.addEventListener('click', () => {
+  alert('아이폰에서는 Safari에서 공유 버튼을 누른 뒤 "홈 화면에 추가"를 선택하세요.');
+});
+
+dismissInstallBannerBtn?.addEventListener('click', () => {
+  localStorage.setItem('installBannerDismissed', 'true');
+  updateInstallBanner();
+});
     function initWeekOptions() {
       weekNumberEl.innerHTML = '';
       for (let i = 1; i <= 16; i += 1) {
@@ -1097,7 +1238,39 @@ async function uploadHomeworkFile(userId, weekNumber, file) {
     saveNoteBtn.addEventListener('click', async () => {
       if (!auth.currentUser || !currentUserProfile) return;
 const selectedFile = homeworkFileEl.files?.[0] || null;
+window.addEventListener('beforeinstallprompt', (event) => {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+  updateInstallBanner();
+});
+installAppBtn?.addEventListener('click', async () => {
+  if (!deferredInstallPrompt) return;
 
+  deferredInstallPrompt.prompt();
+
+  try {
+    await deferredInstallPrompt.userChoice;
+  } catch (error) {
+    console.error(error);
+  }
+
+  deferredInstallPrompt = null;
+  updateInstallBanner();
+});
+
+iosGuideBtn?.addEventListener('click', () => {
+  alert('아이폰에서는 Safari에서 공유 버튼 → "홈 화면에 추가"를 눌러주세요.');
+});
+
+dismissInstallBannerBtn?.addEventListener('click', () => {
+  localStorage.setItem('installBannerDismissed', 'true');
+  updateInstallBanner();
+});
+window.addEventListener('appinstalled', () => {
+  deferredInstallPrompt = null;
+  localStorage.removeItem('installBannerDismissed');
+  updateInstallBanner();
+});
 let homeworkFileData = existingHomeworkFile;
 if (selectedFile) {
   homeworkFileStatusEl.textContent = '파일 업로드 중...';
@@ -1491,7 +1664,48 @@ async function loadAllNotesForTeacher() {
     teacherPagination.innerHTML = '';
   }
 }
+let deferredInstallPrompt = null;
 
+function isIosDevice() {
+  return /iphone|ipad|ipod/i.test(window.navigator.userAgent);
+}
+
+function isInStandaloneMode() {
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+}
+
+function shouldHideInstallBanner() {
+  return localStorage.getItem('installBannerDismissed') === 'true';
+}
+
+function updateInstallBanner() {
+  if (!installBanner) return;
+
+  if (isInStandaloneMode() || shouldHideInstallBanner()) {
+    installBanner.classList.add('hidden');
+    installAppBtn?.classList.add('hidden');
+    iosGuideBtn?.classList.add('hidden');
+    return;
+  }
+
+  installBanner.classList.remove('hidden');
+
+  if (deferredInstallPrompt) {
+    installAppBtn?.classList.remove('hidden');
+  } else {
+    installAppBtn?.classList.add('hidden');
+  }
+
+  if (isIosDevice()) {
+    iosGuideBtn?.classList.remove('hidden');
+  } else {
+    iosGuideBtn?.classList.add('hidden');
+  }
+
+  if (!deferredInstallPrompt && !isIosDevice()) {
+    installBanner.classList.add('hidden');
+  }
+}
     async function setView(profile) {
   authSection.classList.add('hidden');
   logoutBtn.classList.remove('hidden');
@@ -1540,10 +1754,20 @@ async function loadAllNotesForTeacher() {
         showMessage(`사용자 정보 로드 실패: ${error.message}`);
       }
     });
-
-    initWeekOptions();
-    lessonDateEl.addEventListener('change', syncWeekNumberFromLessonDate);
-    resetForm();
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', async () => {
+    try {
+      await navigator.serviceWorker.register('./sw.js');
+      console.log('Service Worker registered');
+    } catch (error) {
+      console.error('Service Worker registration failed:', error);
+    }
+  });
+}
+initWeekOptions();
+lessonDateEl.addEventListener('change', syncWeekNumberFromLessonDate);
+resetForm();
+updateInstallBanner();
   </script>
 </body>
 </html>
