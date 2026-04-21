@@ -17,10 +17,6 @@
 <link rel="manifest" href="./manifest.webmanifest" />
 <link rel="apple-touch-icon" href="./icons/icon-192.png" />
 
-<meta property="og:title" content="레슨 복습 노트" />
-<meta property="og:description" content="수업 내용을 기록하고 피드백을 확인하는 레슨 복습 노트 앱" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://healthkangaudio.github.io/Review-Lesson/" />
   <style>
     :root {
       --bg: #0f172a;
@@ -816,7 +812,7 @@
           <input id="name" type="text" placeholder="홍길동" />
         </div>
         <div class="grid-2" style="margin-top:14px;">
-          <button id="signupBtn" class="btn-primary">학생 회원가입</button>
+          <button id="signupBtn" class="btn-primary">회원가입</button>
           <button id="loginBtn" class="btn-secondary">로그인</button>
         </div>
         
@@ -825,6 +821,11 @@
     </section>
 
     <section id="studentSection" class="hidden">
+      <div style="margin-bottom:12px;">
+  <button id="enablePushBtn" class="btn-blue">
+    피드백 알림 받기
+  </button>
+</div>
   <div id="studentNoticeBanner" class="notice-banner hidden"></div>
       <div class="card">
         <div class="section-title">
@@ -916,6 +917,11 @@
   </div>
 
   <script type="module">
+    import {
+  getMessaging,
+  getToken,
+  onMessage
+} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-messaging.js';
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js';
     import {
       getAuth,
@@ -1207,7 +1213,7 @@ async function uploadHomeworkFile(userId, weekNumber, file) {
           className: '기본반',
           createdAt: new Date().toISOString()
         });
-        showMessage('학생 회원가입이 완료되었습니다.');
+        showMessage('회원가입이 완료되었습니다.');
       } catch (error) {
         console.error(error);
         showMessage(`회원가입 실패: ${error.message}`);
@@ -1691,6 +1697,43 @@ if ('serviceWorker' in navigator) {
     }
   });
 }
+const messaging = getMessaging(app);
+const enablePushBtn = document.getElementById('enablePushBtn');
+
+enablePushBtn?.addEventListener('click', async () => {
+  if (!auth.currentUser) return;
+
+  try {
+    const permission = await Notification.requestPermission();
+
+    if (permission !== 'granted') {
+      showMessage('알림 권한이 필요합니다.');
+      return;
+    }
+
+    const token = await getToken(messaging, {
+      vapidKey: 'F_dJG7hnagU-DqEDYJa9T4qfdFIB-RIkHRXQ6rCMC5Y'
+    });
+
+    if (!token) {
+      showMessage('토큰을 가져오지 못했습니다.');
+      return;
+    }
+
+    await updateDoc(doc(db, 'users', auth.currentUser.uid), {
+      fcmToken: token
+    });
+
+    showMessage('알림이 활성화되었습니다!');
+  } catch (error) {
+    console.error(error);
+    showMessage(error.message);
+  }
+});
+onMessage(messaging, (payload) => {
+  console.log('푸시 수신:', payload);
+  alert(payload.notification?.title || '새 피드백이 도착했습니다!');
+});
 initWeekOptions();
 lessonDateEl.addEventListener('change', syncWeekNumberFromLessonDate);
 resetForm();
