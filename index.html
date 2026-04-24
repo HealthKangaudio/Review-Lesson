@@ -1299,10 +1299,13 @@ if (selectedFile) {
         } else {
           await addDoc(collection(db, 'notes'), {
             ...payload,
-            teacherComment: '',
-            teacherCommentAuthor: '',
-            teacherCommentUpdatedAt: null,
-            createdAt: serverTimestamp()
+           teacherComment: '',
+teacherCommentAuthor: '',
+teacherCommentUpdatedAt: null,
+studentReply: '',
+studentReplyAuthor: '',
+studentReplyUpdatedAt: null,
+createdAt: serverTimestamp()
           });
           showMessage('노트를 저장했습니다.');
         }
@@ -1351,6 +1354,41 @@ homeworkFileEl.addEventListener('change', () => {
       }
     }
 
+    async function saveStudentReply(noteId, replyText) {
+  if (!auth.currentUser || !currentUserProfile || currentUserProfile.role === 'teacher') {
+    showMessage('학생만 답글을 저장할 수 있습니다.');
+    return;
+  }
+
+  try {
+    const noteSnap = await getDoc(doc(db, 'notes', noteId));
+
+    if (!noteSnap.exists()) {
+      showMessage('노트를 찾을 수 없습니다.');
+      return;
+    }
+
+    const note = noteSnap.data();
+
+    if (note.userId !== auth.currentUser.uid) {
+      showMessage('본인 노트에만 답글을 남길 수 있습니다.');
+      return;
+    }
+
+    await updateDoc(doc(db, 'notes', noteId), {
+      studentReply: replyText.trim(),
+      studentReplyAuthor: currentUserProfile.name,
+      studentReplyUpdatedAt: serverTimestamp()
+    });
+
+    showMessage('답글을 저장했습니다.');
+    await loadMyNotes();
+  } catch (error) {
+    console.error(error);
+    showMessage(`답글 저장 실패: ${error.message}`);
+  }
+}
+    
     async function loadMyNotes() {
       if (!auth.currentUser) return;
       myNotesList.innerHTML = '<div class="empty">불러오는 중...</div>';
@@ -1407,13 +1445,30 @@ ${note.homeworkFile?.url ? `
     <span class="small muted">(${formatFileSize(note.homeworkFile.size || 0)})</span>
   </p>
 ` : ''}
-              ${note.teacherComment ? `
-                <div class="teacher-comment">
-                  <strong class="status-violet">선생님 피드백</strong>
-                  <div style="margin-top:8px;">${escapeHtml(note.teacherComment)}</div>
-                  <div class="small muted" style="margin-top:8px;">작성자: ${escapeHtml(note.teacherCommentAuthor || '선생님')}</div>
-                </div>
-              ` : ''}
+             ${note.teacherComment ? `
+  <div class="teacher-comment">
+    <strong class="status-violet">선생님 피드백</strong>
+    <div style="margin-top:8px;">${escapeHtml(note.teacherComment)}</div>
+    <div class="small muted" style="margin-top:8px;">
+      작성자: ${escapeHtml(note.teacherCommentAuthor || '선생님')}
+    </div>
+
+    <div style="margin-top:12px;">
+      <label for="studentReply-${note.id}">피드백에 대한 답글</label>
+      <textarea
+        id="studentReply-${note.id}"
+        data-student-reply-id="${note.id}"
+        placeholder="선생님 피드백에 대한 질문이나 답변을 남겨보세요."
+      >${note.studentReply || ''}</textarea>
+
+      <div class="toolbar" style="margin-top:10px;">
+        <button class="btn-violet" data-save-student-reply-id="${note.id}">
+          답글 저장
+        </button>
+      </div>
+    </div>
+  </div>
+` : ''}
               <div class="toolbar" style="margin-top:12px;">
                 <button class="btn-secondary" data-edit-id="${note.id}">수정하기</button>
               </div>
@@ -1444,6 +1499,13 @@ homeworkFileStatusEl.textContent = existingHomeworkFile
             window.scrollTo({ top: 0, behavior: 'smooth' });
           });
         });
+        myNotesList.querySelectorAll('[data-save-student-reply-id]').forEach((button) => {
+  button.addEventListener('click', async (event) => {
+    const noteId = event.currentTarget.dataset.saveStudentReplyId;
+    const textarea = myNotesList.querySelector(`[data-student-reply-id="${noteId}"]`);
+    await saveStudentReply(noteId, textarea?.value || '');
+  });
+});
       } catch (error) {
         console.error(error);
         myNotesList.innerHTML = `<div class="empty">불러오기 실패: ${escapeHtml(error.message)}</div>`;
@@ -1579,21 +1641,35 @@ async function loadAllNotesForTeacher() {
           ` : ''}
         </div>
 
-        <div class="teacher-comment-box">
-          <div class="comment-title">선생님 피드백</div>
-          <div class="comment-help">여기에 작성한 내용은 학생 화면에도 그대로 표시됩니다.</div>
+   <div class="teacher-comment-box">
+  <div class="comment-title">선생님 피드백</div>
+  <div class="comment-help">여기에 작성한 내용은 학생 화면에도 그대로 표시됩니다.</div>
 
-          <textarea data-comment-id="${note.id}" placeholder="피드백을 입력하세요.">${note.teacherComment || ''}</textarea>
+  <textarea data-comment-id="${note.id}" placeholder="피드백을 입력하세요.">${note.teacherComment || ''}</textarea>
 
-          <div class="teacher-comment-footer">
-            <div class="small muted">
-              ${note.teacherCommentAuthor
-                ? `마지막 작성: ${escapeHtml(note.teacherCommentAuthor)}`
-                : '아직 코멘트 없음'}
-            </div>
-            <button class="btn-violet" data-save-comment-id="${note.id}">코멘트 저장</button>
-          </div>
-        </div>
+  <div class="teacher-comment-footer">
+    <div class="small muted">
+      ${note.teacherCommentAuthor
+        ? `마지막 작성: ${escapeHtml(note.teacherCommentAuthor)}`
+        : '아직 코멘트 없음'}
+    </div>
+    <button class="btn-violet" data-save-comment-id="${note.id}">코멘트 저장</button>
+  </div>
+
+  ${note.studentReply ? `
+    <div class="teacher-note-block" style="margin-top:12px;">
+      <h5>학생 답글</h5>
+      <p>${escapeHtml(note.studentReply)}</p>
+      <div class="small muted" style="margin-top:8px;">
+        작성자: ${escapeHtml(note.studentReplyAuthor || note.studentName || '학생')}
+      </div>
+    </div>
+  ` : `
+    <div class="small muted" style="margin-top:12px;">
+      아직 학생 답글이 없습니다.
+    </div>
+  `}
+</div>
       </div>
     `);
 
