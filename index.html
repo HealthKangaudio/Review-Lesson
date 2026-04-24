@@ -1711,9 +1711,14 @@ enablePushBtn?.addEventListener('click', async () => {
       return;
     }
 
-    const token = await getToken(messaging, {
-      vapidKey: 'F_dJG7hnagU-DqEDYJa9T4qfdFIB-RIkHRXQ6rCMC5Y'
-    });
+    const messagingSwRegistration = await navigator.serviceWorker.register(
+  './firebase-messaging-sw.js'
+);
+
+const token = await getToken(messaging, {
+  vapidKey: 'F_dJG7hnagU-DqEDYJa9T4qfdFIB-RIkHRXQ6rCMC5Y',
+  serviceWorkerRegistration: messagingSwRegistration
+});
 
     if (!token) {
       showMessage('토큰을 가져오지 못했습니다.');
