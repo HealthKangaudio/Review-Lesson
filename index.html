@@ -795,30 +795,51 @@
     </div>
 
     <section id="authSection" class="hero">
-      <div class="card">
-        <h2>로그인 / 회원가입</h2>
-        <div class="grid-2">
-          <div>
-            <label for="email">이메일</label>
-            <input id="email" type="email" placeholder="example@email.com" />
-          </div>
-          <div>
-            <label for="password">비밀번호</label>
-            <input id="password" type="password" placeholder="비밀번호 입력" />
-          </div>
-        </div>
-        <div style="margin-top:12px;">
-          <label for="name">이름</label>
-          <input id="name" type="text" placeholder="홍길동" />
-        </div>
-        <div class="grid-2" style="margin-top:14px;">
-          <button id="signupBtn" class="btn-primary">회원가입</button>
-          <button id="loginBtn" class="btn-secondary">로그인</button>
-        </div>
-        
-      </div>
+  <div class="card">
+    <h2>로그인</h2>
 
-    </section>
+    <div class="grid-2">
+      <div>
+        <label for="email">이메일</label>
+        <input id="email" type="email" placeholder="example@email.com" />
+      </div>
+      <div>
+        <label for="password">비밀번호</label>
+        <input id="password" type="password" placeholder="비밀번호 입력" />
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:14px;">
+      <button id="showSignupBtn" class="btn-secondary">회원가입</button>
+      <button id="loginBtn" class="btn-primary">로그인</button>
+    </div>
+  </div>
+
+  <div id="signupCard" class="card hidden">
+    <h2>회원가입</h2>
+
+    <div>
+      <label for="signupName">이름</label>
+      <input id="signupName" type="text" placeholder="홍길동" />
+    </div>
+
+    <div class="grid-2" style="margin-top:12px;">
+      <div>
+        <label for="signupEmail">이메일</label>
+        <input id="signupEmail" type="email" placeholder="example@email.com" />
+      </div>
+      <div>
+        <label for="signupPassword">비밀번호</label>
+        <input id="signupPassword" type="password" placeholder="비밀번호 입력" />
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:14px;">
+      <button id="hideSignupBtn" class="btn-secondary">취소</button>
+      <button id="signupBtn" class="btn-primary">가입 완료</button>
+    </div>
+  </div>
+</section>
 
     <section id="studentSection" class="hidden">
       <div style="margin-bottom:12px;">
@@ -1025,7 +1046,15 @@ function updateInstallBanner() {
 }
 const emailEl = document.getElementById('email');
 const passwordEl = document.getElementById('password');
-const nameEl = document.getElementById('name');
+
+const showSignupBtn = document.getElementById('showSignupBtn');
+const hideSignupBtn = document.getElementById('hideSignupBtn');
+const signupCard = document.getElementById('signupCard');
+
+const signupNameEl = document.getElementById('signupName');
+const signupEmailEl = document.getElementById('signupEmail');
+const signupPasswordEl = document.getElementById('signupPassword');
+
 const signupBtn = document.getElementById('signupBtn');
 const loginBtn = document.getElementById('loginBtn');
 
@@ -1202,30 +1231,64 @@ async function uploadHomeworkFile(userId, weekNumber, file) {
     }
 
     signupBtn.addEventListener('click', async () => {
-      const email = emailEl.value.trim();
-      const password = passwordEl.value.trim();
-      const name = nameEl.value.trim();
-      if (!email || !password || !name) {
-        showMessage('이메일, 비밀번호, 이름을 모두 입력하세요.');
-        return;
-      }
+  const email = signupEmailEl.value.trim();
+  const password = signupPasswordEl.value.trim();
+  const name = signupNameEl.value.trim();
 
-      try {
-        const result = await createUserWithEmailAndPassword(auth, email, password);
-        await createUserProfile(result.user.uid, {
-          name,
-          email,
-          role: 'student',
-          className: '기본반',
-          createdAt: new Date().toISOString()
-        });
-        showMessage('회원가입이 완료되었습니다.');
-      } catch (error) {
-        console.error(error);
-        showMessage(`회원가입 실패: ${error.message}`);
-      }
+  if (!email || !password || !name) {
+    showMessage('이름, 이메일, 비밀번호를 모두 입력하세요.');
+    return;
+  }
+
+  try {
+    const result = await createUserWithEmailAndPassword(auth, email, password);
+    await createUserProfile(result.user.uid, {
+      name,
+      email,
+      role: 'student',
+      className: '기본반',
+      createdAt: new Date().toISOString()
+    });
+    showMessage('회원가입이 완료되었습니다.');
+  } catch (error) {
+    console.error(error);
+    showMessage(`회원가입 실패: ${error.message}`);
+  }
+});
+showSignupBtn.addEventListener('click', () => {
+  signupCard.classList.remove('hidden');
+});
+
+hideSignupBtn.addEventListener('click', () => {
+  signupCard.classList.add('hidden');
+});
+signupBtn.addEventListener('click', async () => {
+  const email = signupEmailEl.value.trim();
+  const password = signupPasswordEl.value.trim();
+  const name = signupNameEl.value.trim();
+
+  if (!email || !password || !name) {
+    showMessage('이름, 이메일, 비밀번호를 모두 입력하세요.');
+    return;
+  }
+
+  try {
+    const result = await createUserWithEmailAndPassword(auth, email, password);
+    await createUserProfile(result.user.uid, {
+      name,
+      email,
+      role: 'student',
+      className: '기본반',
+      createdAt: new Date().toISOString()
     });
 
+    showMessage('회원가입이 완료되었습니다.');
+    signupCard.classList.add('hidden');
+  } catch (error) {
+    console.error(error);
+    showMessage(`회원가입 실패: ${error.message}`);
+  }
+});
     loginBtn.addEventListener('click', async () => {
       const email = emailEl.value.trim();
       const password = passwordEl.value.trim();
