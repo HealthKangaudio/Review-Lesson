@@ -887,11 +887,17 @@
     </section>
 
     <section id="teacherSection" class="hidden">
+     
       <div class="card">
         <div class="section-title">
           <h2>선생님용 관리 화면</h2>
           <span class="badge">teacher</span>
         </div>
+         <div style="margin-bottom:12px;">
+  <button id="enableTeacherPushBtn" class="btn-blue">
+    학생 제출 알림 받기
+  </button>
+</div>
         <div class="toolbar">
           <div>
             <label for="teacherStudentFilter">학생 선택</label>
@@ -1699,8 +1705,9 @@ if ('serviceWorker' in navigator) {
 }
 const messaging = getMessaging(app);
 const enablePushBtn = document.getElementById('enablePushBtn');
+const enableTeacherPushBtn = document.getElementById('enableTeacherPushBtn');
 
-enablePushBtn?.addEventListener('click', async () => {
+async function enablePushNotifications(successMessage = '알림이 활성화되었습니다!') {
   if (!auth.currentUser) return;
 
   try {
@@ -1712,13 +1719,19 @@ enablePushBtn?.addEventListener('click', async () => {
     }
 
     const messagingSwRegistration = await navigator.serviceWorker.register(
-  './firebase-messaging-sw.js'
-);
+      './firebase-messaging-sw.js'
+    );
 
-const token = await getToken(messaging, {
-  vapidKey: 'BGn5h4bVVPew6_1-hx1RzsFaUQgSk1862ies49fOYKYu8488dDdjPuhOzVDLyrFUwhG0aMX5JaP1Fu1l1Y5AoZg',
-  serviceWorkerRegistration: messagingSwRegistration
-});
+    const existingSubscription = await messagingSwRegistration.pushManager.getSubscription();
+
+    if (existingSubscription) {
+      await existingSubscription.unsubscribe();
+    }
+
+    const token = await getToken(messaging, {
+      vapidKey: 'BGn5h4bVVPew6_1-hx1RzsFaUQgSk1862ies49fOYKYu8488dDdjPuhOzVDLyrFUwhG0aMX5JaP1Fu1l1Y5AoZg',
+      serviceWorkerRegistration: messagingSwRegistration
+    });
 
     if (!token) {
       showMessage('토큰을 가져오지 못했습니다.');
@@ -1726,18 +1739,37 @@ const token = await getToken(messaging, {
     }
 
     await updateDoc(doc(db, 'users', auth.currentUser.uid), {
-      fcmToken: token
+      fcmToken: token,
+      pushEnabled: true,
+      pushUpdatedAt: serverTimestamp()
     });
 
-    showMessage('알림이 활성화되었습니다!');
+    showMessage(successMessage);
   } catch (error) {
     console.error(error);
     showMessage(error.message);
   }
+}
+
+enablePushBtn?.addEventListener('click', () => {
+  enablePushNotifications('피드백 알림이 활성화되었습니다!');
+});
+
+enableTeacherPushBtn?.addEventListener('click', () => {
+  enablePushNotifications('학생 제출 알림이 활성화되었습니다!');
 });
 onMessage(messaging, (payload) => {
   console.log('푸시 수신:', payload);
-  alert(payload.notification?.title || '새 피드백이 도착했습니다!');
+ onMessage(messaging, (payload) => {
+  console.log('푸시 수신:', payload);
+
+  const title =
+    payload.notification?.title ||
+    (payload.data?.type === 'student_note_created'
+      ? '새 수업 노트가 제출됐어요'
+      : '새 알림이 도착했습니다!');
+
+  alert(title);
 });
 initWeekOptions();
 lessonDateEl.addEventListener('change', syncWeekNumberFromLessonDate);
