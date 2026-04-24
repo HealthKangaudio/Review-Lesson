@@ -1834,11 +1834,10 @@ enablePushBtn?.addEventListener('click', () => {
 enableTeacherPushBtn?.addEventListener('click', () => {
   enablePushNotifications('학생 제출 알림이 활성화되었습니다!');
 });
-onMessage(messaging, (payload) => {
-  console.log('푸시 수신:', payload);
+
  onMessage(messaging, (payload) => {
   console.log('푸시 수신:', payload);
-
+   
   const title =
     payload.notification?.title ||
     (payload.data?.type === 'student_note_created'
