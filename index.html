@@ -1874,26 +1874,38 @@ enableTeacherPushBtn?.addEventListener('click', () => {
   enablePushNotifications('학생 제출 알림이 활성화되었습니다!');
 });
 
- onMessage(messaging, (payload) => {
+ onMessage(messaging, async (payload) => {
   console.log('푸시 수신:', payload);
+
+  const type = payload.data?.type || '';
 
   const title =
     payload.notification?.title ||
-    (payload.data?.type === 'student_note_created'
-      ? '새 수업 노트가 제출됐어요'
-      : '새 알림이 도착했습니다!');
+    (type === 'student_note_created'
+      ? '새 수업 요약 노트가 제출됐어요'
+      : type === 'teacher_feedback'
+        ? '새 피드백이 도착했어요'
+        : '새 알림이 도착했습니다!');
 
   const body =
     payload.notification?.body ||
     payload.data?.body ||
     '앱을 열어 확인해보세요.';
 
-  if (Notification.permission === 'granted') {
-    new Notification(title, {
+  try {
+    const registration =
+      await navigator.serviceWorker.getRegistration('./firebase-messaging-sw.js') ||
+      await navigator.serviceWorker.register('./firebase-messaging-sw.js');
+
+    await registration.showNotification(title, {
       body,
-      icon: './icons/icon-192.png'
+      icon: './icons/icon-192.png',
+      data: {
+        url: payload.fcmOptions?.link || 'https://healthkangaudio.github.io/Review-Lesson/'
+      }
     });
-  } else {
+  } catch (error) {
+    console.error('foreground 알림 표시 실패:', error);
     alert(title);
   }
 });
