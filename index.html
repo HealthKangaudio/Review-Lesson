@@ -769,6 +769,28 @@
     min-width: 0;
   }
 }
+    .in-app-notice {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  top: 14px;
+  z-index: 9999;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: rgba(15, 23, 42, 0.96);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: #f8fafc;
+  box-shadow: 0 14px 30px rgba(0,0,0,0.35);
+}
+
+.in-app-notice strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.in-app-notice button {
+  margin-top: 10px;
+}
   </style>
 </head>
 <body>
@@ -1127,7 +1149,30 @@ dismissInstallBannerBtn?.addEventListener('click', () => {
     function showMessage(message) {
       alert(message);
     }
+function showInAppNotice(title, body = '') {
+  const old = document.getElementById('inAppNotice');
+  if (old) old.remove();
 
+  const notice = document.createElement('div');
+  notice.id = 'inAppNotice';
+  notice.className = 'in-app-notice';
+
+  notice.innerHTML = `
+    <strong>${escapeHtml(title)}</strong>
+    <div class="small">${escapeHtml(body)}</div>
+    <button class="btn-secondary">확인</button>
+  `;
+
+  notice.querySelector('button').addEventListener('click', () => {
+    notice.remove();
+  });
+
+  document.body.appendChild(notice);
+
+  setTimeout(() => {
+    notice.remove();
+  }, 6000);
+}
     function calculateWeekNumberFromDate(dateString) {
       const APP_START_DATE = '2026-03-01';
       const start = new Date(APP_START_DATE);
@@ -1874,7 +1919,7 @@ enableTeacherPushBtn?.addEventListener('click', () => {
   enablePushNotifications('학생 제출 알림이 활성화되었습니다!');
 });
 
- onMessage(messaging, async (payload) => {
+ onMessage(messaging, (payload) => {
   console.log('푸시 수신:', payload);
 
   const type = payload.data?.type || '';
@@ -1890,24 +1935,10 @@ enableTeacherPushBtn?.addEventListener('click', () => {
   const body =
     payload.notification?.body ||
     payload.data?.body ||
-    '앱을 열어 확인해보세요.';
+    '앱에서 내용을 확인해보세요.';
 
-  try {
-    const registration =
-      await navigator.serviceWorker.getRegistration('./firebase-messaging-sw.js') ||
-      await navigator.serviceWorker.register('./firebase-messaging-sw.js');
-
-    await registration.showNotification(title, {
-      body,
-      icon: './icons/icon-192.png',
-      data: {
-        url: payload.fcmOptions?.link || 'https://healthkangaudio.github.io/Review-Lesson/'
-      }
-    });
-  } catch (error) {
-    console.error('foreground 알림 표시 실패:', error);
-    alert(title);
-  }
+  // 🔥 핵심: 시스템 알림 대신 앱 내부 배너
+  showInAppNotice(title, body);
 });
 initWeekOptions();
 lessonDateEl.addEventListener('change', syncWeekNumberFromLessonDate);
