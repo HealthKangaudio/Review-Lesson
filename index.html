@@ -1876,14 +1876,26 @@ enableTeacherPushBtn?.addEventListener('click', () => {
 
  onMessage(messaging, (payload) => {
   console.log('푸시 수신:', payload);
-   
+
   const title =
     payload.notification?.title ||
     (payload.data?.type === 'student_note_created'
       ? '새 수업 노트가 제출됐어요'
       : '새 알림이 도착했습니다!');
 
-  alert(title);
+  const body =
+    payload.notification?.body ||
+    payload.data?.body ||
+    '앱을 열어 확인해보세요.';
+
+  if (Notification.permission === 'granted') {
+    new Notification(title, {
+      body,
+      icon: './icons/icon-192.png'
+    });
+  } else {
+    alert(title);
+  }
 });
 initWeekOptions();
 lessonDateEl.addEventListener('change', syncWeekNumberFromLessonDate);
