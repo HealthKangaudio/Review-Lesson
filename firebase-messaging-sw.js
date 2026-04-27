@@ -12,3 +12,33 @@ firebase.initializeApp({
 });
 
 const messaging = firebase.messaging();
+messaging.onBackgroundMessage((payload) => {
+  const title =
+    payload.notification?.title ||
+    payload.data?.title ||
+    "새 알림이 도착했습니다";
+
+  const options = {
+    body:
+      payload.notification?.body ||
+      payload.data?.body ||
+      "앱을 열어 확인해보세요.",
+    icon: "https://healthkangaudio.github.io/Review-Lesson/icons/icon-192.png",
+    data: {
+      url: "https://healthkangaudio.github.io/Review-Lesson/"
+    }
+  };
+
+  self.registration.showNotification(title, options);
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+
+  event.waitUntil(
+    clients.openWindow(
+      event.notification.data?.url ||
+      "https://healthkangaudio.github.io/Review-Lesson/"
+    )
+  );
+});
