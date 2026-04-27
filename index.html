@@ -1230,31 +1230,7 @@ async function uploadHomeworkFile(userId, weekNumber, file) {
       return snapshot.exists() ? snapshot.data() : null;
     }
 
-    signupBtn.addEventListener('click', async () => {
-  const email = signupEmailEl.value.trim();
-  const password = signupPasswordEl.value.trim();
-  const name = signupNameEl.value.trim();
 
-  if (!email || !password || !name) {
-    showMessage('이름, 이메일, 비밀번호를 모두 입력하세요.');
-    return;
-  }
-
-  try {
-    const result = await createUserWithEmailAndPassword(auth, email, password);
-    await createUserProfile(result.user.uid, {
-      name,
-      email,
-      role: 'student',
-      className: '기본반',
-      createdAt: new Date().toISOString()
-    });
-    showMessage('회원가입이 완료되었습니다.');
-  } catch (error) {
-    console.error(error);
-    showMessage(`회원가입 실패: ${error.message}`);
-  }
-});
 showSignupBtn.addEventListener('click', () => {
   signupCard.classList.remove('hidden');
 });
