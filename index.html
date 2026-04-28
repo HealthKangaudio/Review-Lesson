@@ -1416,24 +1416,37 @@ homeworkFileEl.addEventListener('change', () => {
   await loadAllNotesForTeacher();
 });
     async function saveTeacherComment(noteId, commentText) {
-      if (!auth.currentUser || !currentUserProfile || currentUserProfile.role !== 'teacher') {
-        showMessage('선생님만 피드백을 저장할 수 있습니다.');
-        return;
-      }
+  if (!auth.currentUser) {
+    showMessage('로그인이 필요합니다.');
+    return;
+  }
 
-      try {
-        await updateDoc(doc(db, 'notes', noteId), {
-          teacherComment: commentText.trim(),
-          teacherCommentAuthor: currentUserProfile.name,
-          teacherCommentUpdatedAt: serverTimestamp()
-        });
-        showMessage('선생님 피드백을 저장했습니다.');
-        await loadAllNotesForTeacher();
-      } catch (error) {
-        console.error(error);
-        showMessage(`피드백 저장 실패: ${error.message}`);
-      }
-    }
+  if (!currentUserProfile) {
+    showMessage('사용자 정보를 불러오지 못했습니다.');
+    return;
+  }
+
+  if (currentUserProfile.role !== 'teacher') {
+    showMessage(`선생님 계정만 피드백을 저장할 수 있습니다. 현재 role: ${currentUserProfile.role}`);
+    return;
+  }
+
+  try {
+    await updateDoc(doc(db, 'notes', noteId), {
+      teacherComment: commentText.trim(),
+      teacherCommentAuthor: currentUserProfile.name || '선생님',
+      teacherCommentUpdatedAt: serverTimestamp(),
+      reviewed: true
+    });
+
+    showMessage('선생님 피드백을 저장했습니다.');
+    await loadAllNotesForTeacher();
+
+  } catch (error) {
+    console.error('피드백 저장 실패:', error);
+    showMessage(`피드백 저장 실패: ${error.code || ''} ${error.message}`);
+  }
+}
 async function addNoteComment(noteId, commentText) {
   if (!auth.currentUser || !currentUserProfile) {
     showMessage('로그인이 필요합니다.');
@@ -1823,9 +1836,18 @@ for (const note of pagedNotes) {
 });
 teacherNotesList.querySelectorAll('[data-save-comment-id]').forEach((button) => {
   button.addEventListener('click', async (event) => {
-    const noteId = event.currentTarget.dataset.saveCommentId;
-    const textarea = teacherNotesList.querySelector(`[data-comment-id="${noteId}"]`);
-    await saveTeacherComment(noteId, textarea?.value || '');
+    const buttonEl = event.currentTarget;
+    const noteId = buttonEl.dataset.saveCommentId;
+
+    const card = buttonEl.closest('.teacher-note-card');
+    const textarea = card?.querySelector(`[data-comment-id="${noteId}"]`);
+
+    if (!textarea) {
+      showMessage('피드백 입력창을 찾지 못했습니다.');
+      return;
+    }
+
+    await saveTeacherComment(noteId, textarea.value || '');
   });
 });
     if (filteredNotes.length > 0) {
