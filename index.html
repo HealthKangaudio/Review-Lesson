@@ -809,7 +809,7 @@
 </div>
       <div>
         <h1>수업 요약 노트</h1>
-        <p class="muted">학생은 수업 내용을 정리하고, 선생님은 학생들 제출 현황을 확인하고 피드백을 작성할 수 있습니다.</p>
+        <p class="muted">학생은 수업 내용을 정리하고, 선생님은 학생들 제출 현황을 확인하고 댓글을 작성할 수 있습니다.</p>
       </div>
       <div class="toolbar">
   <button id="logoutBtn" class="btn-secondary hidden">로그아웃</button>
@@ -866,7 +866,7 @@
     <section id="studentSection" class="hidden">
       <div style="margin-bottom:12px;">
   <button id="enablePushBtn" class="btn-blue">
-    피드백 알림 받기
+    댓글 알림 받기
   </button>
 </div>
   <div id="studentNoticeBanner" class="notice-banner hidden"></div>
@@ -957,7 +957,7 @@
 
       <div class="card">
   <div class="section-title">
-    <h2 id="teacherNotesTitle">제출된 노트 상세 및 피드백</h2>
+    <h2 id="teacherNotesTitle">제출된 노트 상세 및 댓글</h2>
   </div>
   <div id="teacherNotesList"></div>
   <div id="teacherPagination" class="pagination hidden"></div>
@@ -1382,12 +1382,9 @@ if (selectedFile) {
           showMessage('노트를 수정했습니다.');
         } else {
           await addDoc(collection(db, 'notes'), {
-            ...payload,
-           teacherComment: '',
-teacherCommentAuthor: '',
-teacherCommentUpdatedAt: null,
-createdAt: serverTimestamp()
-          });
+  ...payload,
+  createdAt: serverTimestamp()
+});
           showMessage('노트를 저장했습니다.');
         }
         resetForm();
