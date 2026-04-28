@@ -1821,7 +1821,13 @@ for (const note of pagedNotes) {
     await addNoteComment(noteId, textarea?.value || '');
   });
 });
-
+teacherNotesList.querySelectorAll('[data-save-comment-id]').forEach((button) => {
+  button.addEventListener('click', async (event) => {
+    const noteId = event.currentTarget.dataset.saveCommentId;
+    const textarea = teacherNotesList.querySelector(`[data-comment-id="${noteId}"]`);
+    await saveTeacherComment(noteId, textarea?.value || '');
+  });
+});
     if (filteredNotes.length > 0) {
       teacherPagination.classList.remove('hidden');
 
