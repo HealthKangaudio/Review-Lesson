@@ -1470,19 +1470,25 @@ async function addNoteComment(noteId, commentText) {
 }
 
 async function loadNoteComments(noteId) {
-  const commentsSnap = await getDocs(
-    query(
-      collection(db, 'notes', noteId, 'comments'),
-      orderBy('createdAt', 'asc')
-    )
-  );
+  try {
+    const commentsSnap = await getDocs(
+      query(
+        collection(db, 'notes', noteId, 'comments'),
+        orderBy('createdAt', 'asc')
+      )
+    );
 
-  const comments = [];
-  commentsSnap.forEach((docSnap) => {
-    comments.push({ id: docSnap.id, ...docSnap.data() });
-  });
+    const comments = [];
+    commentsSnap.forEach((docSnap) => {
+      comments.push({ id: docSnap.id, ...docSnap.data() });
+    });
 
-  return comments;
+    return comments;
+
+  } catch (error) {
+    console.error('댓글 불러오기 실패:', noteId, error);
+    return []; // 🔥 이게 핵심 (에러 나도 노트는 보여줌)
+  }
 }
     
     async function loadMyNotes() {
