@@ -18,47 +18,117 @@
 <link rel="apple-touch-icon" href="./icons/icon-192.png" />
 
   <style>
+
     :root {
-      --bg: #0f172a;
-      --panel: #111827;
-      --panel-2: #1f2937;
-      --line: #374151;
-      --text: #f9fafb;
-      --muted: #9ca3af;
+      --bg: #f6fbff;
+      --surface: #ffffff;
+      --surface-soft: #f8fbff;
+      --surface-blue: #eef8ff;
+      --line: #c7e6fb;
+      --line-strong: #7dd3fc;
+      --text: #0f172a;
+      --muted: #64748b;
       --accent: #22c55e;
       --accent-2: #16a34a;
+      --blue: #0ea5e9;
+      --blue-2: #0284c7;
+      --violet: #8b5cf6;
+      --violet-soft: #f1edff;
       --danger: #ef4444;
       --warn: #f59e0b;
-      --blue: #38bdf8;
-      --violet: #a78bfa;
+      --shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+      --shadow-soft: 0 8px 18px rgba(15, 23, 42, 0.06);
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --radius-sm: 14px;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(180deg, #0b1220 0%, #111827 100%);
+      font-family: Arial, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(186, 230, 253, 0.75), transparent 34%),
+        radial-gradient(circle at top right, rgba(220, 252, 231, 0.8), transparent 30%),
+        linear-gradient(180deg, #f0f9ff 0%, #f8fafc 48%, #f0fdf4 100%);
       color: var(--text);
     }
 
     .wrap {
       width: 100%;
-      max-width: 1180px;
+      max-width: 1120px;
       margin: 0 auto;
-      padding: 24px 16px 60px;
+      padding: 28px 18px 64px;
     }
 
-    h1, h2, h3, p { margin-top: 0; }
-    strong { color: #fff; }
+    h1, h2, h3, p {
+      margin-top: 0;
+    }
+
+    h1 {
+      margin-bottom: 8px;
+      font-size: 34px;
+      line-height: 1.2;
+      letter-spacing: -0.04em;
+      color: #0f172a;
+    }
+
+    h2 {
+      margin-bottom: 0;
+      font-size: 23px;
+      line-height: 1.3;
+      letter-spacing: -0.03em;
+      color: #0f172a;
+    }
+
+    strong {
+      color: #0f172a;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .muted {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .small {
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      padding: 22px;
+      border: 1px solid rgba(125, 211, 252, 0.42);
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.74);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .topbar .toolbar {
+      min-width: 130px;
+    }
 
     .card {
-      background: rgba(17, 24, 39, 0.92);
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 18px;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(199, 230, 251, 0.95);
+      border-radius: var(--radius-lg);
+      padding: 22px;
       margin-bottom: 16px;
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
-      backdrop-filter: blur(8px);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
     }
 
     .hero,
@@ -69,76 +139,114 @@
       gap: 16px;
     }
 
-    .hero { grid-template-columns: 1.15fr 0.85fr; }
+    .hero {
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: start;
+    }
+
     .grid-2 { grid-template-columns: 1fr 1fr; }
     .grid-3 { grid-template-columns: repeat(3, 1fr); }
     .grid-4 { grid-template-columns: repeat(4, 1fr); }
 
-    .hidden { display: none !important; }
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
 
     label {
       display: block;
-      font-size: 14px;
-      font-weight: bold;
-      margin-bottom: 6px;
+      font-size: 13px;
+      font-weight: 800;
+      color: #334155;
+      margin-bottom: 7px;
     }
 
-    input, select, textarea, button {
+    input,
+    select,
+    textarea {
       width: 100%;
-      border-radius: 12px;
-      border: 1px solid var(--line);
-      background: var(--panel-2);
+      border-radius: 16px;
+      border: 2px solid var(--line-strong);
+      background: #ffffff;
       color: var(--text);
-      padding: 12px 14px;
-      font-size: 14px;
+      padding: 13px 14px;
+      font-size: 15px;
+      line-height: 1.5;
+      transition: border-color 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
     }
 
     textarea {
-      min-height: 110px;
+      min-height: 124px;
       resize: vertical;
-      line-height: 1.5;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #94a3b8;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.18);
+      background: #ffffff;
     }
 
     button {
+      width: 100%;
+      min-height: 46px;
+      border: 0;
+      border-radius: 16px;
+      padding: 12px 15px;
+      font-size: 14px;
+      font-weight: 800;
       cursor: pointer;
-      font-weight: bold;
-      transition: 0.18s ease;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, filter 0.16s ease;
     }
 
     button:hover {
       transform: translateY(-1px);
-      border-color: #4b5563;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+    }
+
+    button:active {
+      transform: translateY(0);
+      box-shadow: none;
     }
 
     .btn-primary {
-      background: var(--accent);
+      background: linear-gradient(135deg, #22c55e, #86efac);
       color: #052e16;
-      border: none;
     }
 
-    .btn-primary:hover { background: var(--accent-2); }
-
-    .btn-danger {
-      background: var(--danger);
-      color: white;
-      border: none;
+    .btn-primary:hover {
+      filter: saturate(1.08);
     }
 
     .btn-secondary {
-      background: #334155;
-      color: white;
+      background: #e2e8f0;
+      color: #0f172a;
     }
 
     .btn-blue {
-      background: #0f766e;
-      color: white;
-      border: none;
+      background: linear-gradient(135deg, #0ea5e9, #7dd3fc);
+      color: #082f49;
     }
 
     .btn-violet {
-      background: #6d28d9;
-      color: white;
-      border: none;
+      background: linear-gradient(135deg, #8b5cf6, #c4b5fd);
+      color: #2e1065;
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: #ffffff;
     }
 
     .toolbar {
@@ -152,118 +260,89 @@
       flex: 1 1 160px;
     }
 
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      background: #e0f2fe;
+      border: 1px solid #bae6fd;
+      color: #0369a1;
+    }
+
     .pill {
       display: inline-flex;
       align-items: center;
       gap: 8px;
       padding: 6px 10px;
       border-radius: 999px;
-      background: rgba(34, 197, 94, 0.15);
-      color: #bbf7d0;
+      background: rgba(34, 197, 94, 0.12);
+      color: #166534;
       font-size: 12px;
       margin-right: 8px;
       margin-bottom: 8px;
-      border: 1px solid rgba(34, 197, 94, 0.25);
+      border: 1px solid rgba(34, 197, 94, 0.22);
     }
 
-    .muted { color: var(--muted); }
+    .empty {
+      text-align: center;
+      padding: 26px;
+      color: var(--muted);
+      border: 2px dashed #bae6fd;
+      background: #f8fbff;
+      border-radius: 18px;
+    }
+
+    .notice-banner {
+      margin-bottom: 16px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      background: #fffbeb;
+      color: #92400e;
+    }
 
     .note-item,
     .student-card,
     .stat-card,
     .comment-box {
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 14px;
-      background: rgba(31, 41, 55, 0.7);
+      border: 1px solid rgba(199, 230, 251, 0.95);
+      border-radius: 22px;
+      padding: 18px;
+      background: #ffffff;
+      box-shadow: var(--shadow-soft);
     }
 
-    .note-item { margin-bottom: 12px; }
+    .note-item {
+      margin-bottom: 14px;
+    }
 
     .note-item h4,
     .student-card h4,
     .stat-card h4,
     .comment-box h4 {
       margin: 0 0 8px;
-      font-size: 17px;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+      color: #0f172a;
     }
 
     .note-meta,
     .student-meta {
       color: var(--muted);
       font-size: 13px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       line-height: 1.5;
     }
 
-    .status-good { color: #86efac; }
-    .status-warn { color: #fcd34d; }
-    .status-miss { color: #fca5a5; }
-    .status-blue { color: #7dd3fc; }
-    .status-violet { color: #c4b5fd; }
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 18px;
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      background: #1e293b;
-      border: 1px solid #334155;
-      color: #e5e7eb;
-    }
-
-    .section-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 12px;
-      flex-wrap: wrap;
-    }
-
-    .empty {
-      text-align: center;
-      padding: 24px;
-      color: var(--muted);
-      border: 1px dashed var(--line);
-      border-radius: 16px;
-    }
-
-    .summary-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-    }
-
-    .stat-card .stat-value {
-      font-size: 30px;
-      font-weight: bold;
-      margin-top: 10px;
-    }
-
-    .student-card.submitted { border-color: rgba(34, 197, 94, 0.45); }
-.student-card.missing { border-color: rgba(239, 68, 68, 0.45); }
-.student-card.pending { border-color: rgba(245, 158, 11, 0.45); }
-
-.notice-banner {
-  margin-bottom: 16px;
-  padding: 14px 16px;
-  border-radius: 16px;
-  border: 1px solid rgba(245, 158, 11, 0.35);
-  background: rgba(245, 158, 11, 0.12);
-  color: #fde68a;
-}
-
-    .small { font-size: 12px; }
+    .status-good { color: #16a34a; }
+    .status-warn { color: #d97706; }
+    .status-miss { color: #dc2626; }
+    .status-blue { color: #0284c7; }
+    .status-violet { color: #7c3aed; }
 
     .note-footer {
       display: grid;
@@ -271,526 +350,529 @@
       gap: 12px;
       margin-top: 12px;
     }
-.teacher-note-card {
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  background: rgba(15, 23, 42, 0.72);
-  padding: 16px;
-  margin-bottom: 16px;
-}
 
-.teacher-note-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: 12px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
-}
-
-.teacher-note-title {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.teacher-note-submeta {
-  margin-top: 6px;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.teacher-note-badges {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.note-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-  background: #1e293b;
-  border: 1px solid #334155;
-  color: #e5e7eb;
-}
-
-.teacher-note-sections {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
-  margin-bottom: 14px;
-}
-
-.teacher-note-block {
-  background: rgba(31, 41, 55, 0.72);
-  border: 1px solid rgba(148, 163, 184, 0.14);
-  border-radius: 14px;
-  padding: 12px 14px;
-}
-
-.teacher-note-block h5 {
-  margin: 0 0 8px;
-  font-size: 13px;
-  color: #cbd5e1;
-}
-
-.teacher-note-block p {
-  margin: 0;
-  line-height: 1.6;
-  color: #f8fafc;
-}
-
-.teacher-file-box {
-  margin-top: 2px;
-  padding: 10px 12px;
-  border-radius: 12px;
-  background: rgba(56, 189, 248, 0.08);
-  border: 1px solid rgba(56, 189, 248, 0.18);
-}
-
-.teacher-file-box a {
-  color: #7dd3fc;
-  text-decoration: none;
-}
-
-.teacher-file-box a:hover {
-  text-decoration: underline;
-}
-
-.teacher-comment-box {
-  margin-top: 4px;
-  padding: 14px;
-  border-radius: 14px;
-  background: rgba(109, 40, 217, 0.10);
-  border: 1px solid rgba(167, 139, 250, 0.28);
-}
-
-.teacher-comment-box .comment-title {
-  font-size: 14px;
-  font-weight: 700;
-  color: #ddd6fe;
-  margin-bottom: 6px;
-}
-
-.teacher-comment-box .comment-help {
-  font-size: 12px;
-  color: var(--muted);
-  margin-bottom: 10px;
-}
-
-.teacher-comment-box textarea {
-  min-height: 110px;
-  background: rgba(17, 24, 39, 0.9);
-}
-
-.teacher-comment-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  margin-top: 10px;
-  flex-wrap: wrap;
-}
-
-.teacher-comment-footer .small {
-  flex: 1 1 220px;
-}
-
-.teacher-comment-footer button {
-  width: auto;
-  min-width: 120px;
-}
-    .teacher-comment {
-      margin-top: 12px;
-      padding: 12px;
-      border-radius: 12px;
-      background: rgba(109, 40, 217, 0.12);
-      border: 1px solid rgba(167, 139, 250, 0.3);
+    .teacher-note-card {
+      border: 1px solid rgba(199, 230, 251, 0.95);
+      border-radius: 24px;
+      background: #ffffff;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-soft);
     }
 
-    .teacher-comment textarea {
-      min-height: 90px;
+    .teacher-note-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .teacher-note-title {
+      margin: 0;
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #0f172a;
+    }
+
+    .teacher-note-submeta {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .teacher-note-badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .note-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      background: #ecfdf5;
+      border: 1px solid #bbf7d0;
+      color: #166534;
+    }
+
+    .teacher-note-sections {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .teacher-note-block {
+      background: #ffffff;
+      border: 2px solid #7dd3fc;
+      border-radius: 18px;
+      padding: 15px 16px;
+      box-shadow: 0 4px 12px rgba(14, 165, 233, 0.08);
+    }
+
+    .teacher-note-block h5 {
+      margin: 0 0 8px;
+      color: #0284c7;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: -0.01em;
+    }
+
+    .teacher-note-block p {
+      margin: 0;
+      color: #0f172a;
+      line-height: 1.7;
+      font-size: 15px;
+      white-space: normal;
+    }
+
+    .teacher-note-summary {
+      background: linear-gradient(180deg, #ecfdf5, #f0fdf4);
+      border: 2px solid #86efac;
+      border-radius: 20px;
+      padding: 18px 20px;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 12px rgba(34, 197, 94, 0.08);
+    }
+
+    .teacher-note-summary h5 {
+      margin: 0 0 8px;
+      font-size: 13px;
+      font-weight: 900;
+      color: #15803d;
+      letter-spacing: -0.01em;
+    }
+
+    .teacher-note-summary p {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.75;
+      font-weight: 700;
+      color: #14532d;
+    }
+
+    .teacher-file-box {
+      margin-top: 10px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+    }
+
+    .teacher-file-box a,
+    .note-item a {
+      color: #0369a1;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .teacher-file-box a:hover,
+    .note-item a:hover {
+      text-decoration: underline;
+    }
+
+    .teacher-comment,
+    .teacher-comment-box {
+      margin-top: 14px;
+      padding: 16px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, #f8fbff, #eef6ff);
+      border: 2px solid #dbeafe;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.06);
+    }
+
+    .teacher-comment > strong,
+    .teacher-comment-box .comment-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      font-weight: 900;
+      color: #0369a1;
+    }
+
+    .teacher-comment > strong::before,
+    .teacher-comment-box .comment-title::before {
+      content: "💬";
+      font-size: 14px;
+    }
+
+    .teacher-comment-box .comment-help {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .teacher-comment textarea,
+    .teacher-comment-box textarea {
+      min-height: 104px;
+      background: #ffffff;
+    }
+
+    .teacher-comment-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .teacher-comment-footer .small {
+      flex: 1 1 220px;
+      color: var(--muted);
+    }
+
+    .teacher-comment-footer button {
+      width: auto;
+      min-width: 128px;
+    }
+
+    .comment-thread {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+      margin-bottom: 12px;
+    }
+
+    .comment-bubble {
+      max-width: 86%;
+      padding: 12px 14px;
+      border-radius: 18px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      color: #0f172a;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+    }
+
+    .comment-bubble.teacher {
+      align-self: flex-end;
+      background: var(--violet-soft);
+      border-color: #c4b5fd;
+    }
+
+    .comment-bubble.student {
+      align-self: flex-start;
+      background: #ffffff;
+      border-color: #bae6fd;
+    }
+
+    .comment-author {
+      margin-bottom: 6px;
+      color: #475569;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .comment-text {
+      color: #0f172a;
+      line-height: 1.65;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .pagination button {
+      width: auto;
+      min-width: 44px;
+      padding: 10px 12px;
+    }
+
+    .pagination .page-info {
+      color: var(--muted);
+      font-size: 14px;
+      padding: 0 6px;
+    }
+
+    .pagination .active-page {
+      background: var(--accent);
+      color: #052e16;
+    }
+
+    .install-banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      border-radius: 18px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+    }
+
+    .install-banner-text {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .install-banner-text strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .install-banner-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .install-banner-actions button {
+      width: auto;
+      min-width: 100px;
+    }
+
+    .in-app-notice {
+      position: fixed;
+      left: 12px;
+      right: 12px;
+      top: 14px;
+      z-index: 9999;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid #bae6fd;
+      color: #0f172a;
+      box-shadow: var(--shadow);
+    }
+
+    .in-app-notice strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .in-app-notice button {
+      margin-top: 10px;
     }
 
     @media (max-width: 980px) {
-  .hero,
-  .grid-2,
-  .grid-3,
-  .grid-4,
-  .summary-row,
-  .note-footer {
-    grid-template-columns: 1fr;
-  }
-}
+      .hero,
+      .grid-2,
+      .grid-3,
+      .grid-4,
+      .summary-row,
+      .note-footer {
+        grid-template-columns: 1fr;
+      }
+    }
 
-@media (max-width: 768px) {
-  body {
-    font-size: 15px;
-  }
+    @media (max-width: 768px) {
+      body {
+        font-size: 15px;
+      }
 
-  .wrap {
-    padding: 14px 12px 32px;
-  }
+      .wrap {
+        padding: 14px 12px 34px;
+      }
 
-  .topbar {
-    align-items: flex-start;
-    gap: 10px;
-    margin-bottom: 14px;
-  }
+      .topbar {
+        padding: 18px;
+        border-radius: 22px;
+      }
 
-  .topbar h1 {
-    font-size: 24px;
-    line-height: 1.25;
-    margin-bottom: 6px;
-  }
+      .topbar h1 {
+        font-size: 26px;
+        line-height: 1.25;
+      }
 
-  .topbar .muted {
-    font-size: 14px;
-    line-height: 1.5;
-  }
+      .topbar .muted {
+        font-size: 14px;
+      }
 
-  .card {
-    padding: 14px;
-    border-radius: 16px;
-    margin-bottom: 12px;
-  }
+      .card {
+        padding: 16px;
+        border-radius: 20px;
+      }
 
-  .section-title {
-    align-items: flex-start;
-    gap: 6px;
-    margin-bottom: 10px;
-  }
+      .section-title {
+        align-items: flex-start;
+        gap: 8px;
+        margin-bottom: 14px;
+      }
 
-  .section-title h2 {
-    font-size: 20px;
-    line-height: 1.3;
-    margin: 0;
-  }
+      .section-title h2 {
+        font-size: 20px;
+      }
 
-  label {
-    font-size: 14px;
-    margin-bottom: 8px;
-  }
+      input,
+      select,
+      textarea,
+      button {
+        font-size: 16px;
+        min-height: 48px;
+      }
 
-  input,
-  select,
-  textarea,
-  button {
-    font-size: 16px;
-    min-height: 48px;
-    padding: 12px 14px;
-  }
+      textarea {
+        min-height: 142px;
+      }
 
-  textarea {
-    min-height: 140px;
-    line-height: 1.6;
-  }
+      .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
 
-  .toolbar {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-  }
+      .toolbar > * {
+        flex: 1 1 auto;
+        width: 100%;
+      }
 
-  .toolbar > * {
-    flex: 1 1 auto;
-    width: 100%;
-  }
+      .badge,
+      .pill,
+      .note-badge {
+        font-size: 12px;
+      }
 
-  .badge,
-  .pill,
-  .note-badge {
-    font-size: 12px;
-  }
+      .notice-banner {
+        padding: 12px 14px;
+        font-size: 14px;
+      }
 
-  .notice-banner {
-    padding: 12px 14px;
-    font-size: 14px;
-    line-height: 1.5;
-  }
+      .note-item,
+      .teacher-note-card {
+        padding: 15px;
+        border-radius: 20px;
+      }
 
-  .note-item,
-  .teacher-note-card {
-    padding: 14px;
-    border-radius: 16px;
-  }
+      .teacher-note-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
 
-  .teacher-note-header {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-  }
+      .teacher-note-title {
+        font-size: 18px;
+      }
 
-  .teacher-note-title {
-    font-size: 17px;
-    line-height: 1.35;
-  }
+      .teacher-note-block {
+        padding: 13px;
+        border-radius: 16px;
+      }
 
-  .teacher-note-submeta {
-    font-size: 13px;
-    line-height: 1.5;
-  }
+      .teacher-note-summary {
+        padding: 16px 14px;
+        border-radius: 18px;
+      }
 
-  .teacher-note-badges {
-    gap: 6px;
-  }
+      .teacher-note-summary p {
+        font-size: 18px;
+      }
 
-  .teacher-note-block {
-    padding: 12px;
-    border-radius: 12px;
-  }
+      .teacher-comment,
+      .teacher-comment-box {
+        padding: 14px;
+        border-radius: 18px;
+      }
 
-  .teacher-note-block h5 {
-    font-size: 13px;
-    margin-bottom: 6px;
-  }
+      .teacher-comment-footer {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+      }
 
-  .teacher-note-block p {
-    font-size: 14px;
-    line-height: 1.65;
-  }
+      .teacher-comment-footer button {
+        width: 100%;
+        min-width: 0;
+      }
 
-  .teacher-file-box {
-    padding: 10px 12px;
-    line-height: 1.5;
-  }
+      .comment-bubble {
+        max-width: 94%;
+      }
 
-  .teacher-comment-box {
-    padding: 12px;
-    border-radius: 12px;
-  }
+      #logoutBtn,
+      #loadDashboardBtn,
+      #saveNoteBtn,
+      #resetFormBtn,
+      #refreshMyNotesBtn {
+        width: 100%;
+      }
 
-  .teacher-comment-box textarea {
-    min-height: 140px;
-  }
+      #teacherStudentFilter {
+        width: 100%;
+      }
 
-  .teacher-comment-footer {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
-  }
+      #myNotesList .toolbar {
+        margin-top: 10px;
+      }
 
-  .teacher-comment-footer button {
-    width: 100%;
-    min-width: 0;
-  }
+      .install-banner {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 12px 14px;
+      }
 
-  #logoutBtn,
-  #loadDashboardBtn,
-  #saveNoteBtn,
-  #resetFormBtn,
-  #refreshMyNotesBtn {
-    width: 100%;
-  }
+      .install-banner-actions {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+      }
 
-  #teacherStudentFilter {
-    width: 100%;
-  }
+      .install-banner-actions button {
+        width: 100%;
+        min-width: 0;
+      }
+    }
 
-  #myNotesList .toolbar {
-    margin-top: 10px;
-  }
-}
+    @media (max-width: 480px) {
+      .wrap {
+        padding: 12px 10px 28px;
+      }
 
-@media (max-width: 480px) {
-  .wrap {
-    padding: 12px 10px 24px;
-  }
+      .card {
+        padding: 14px;
+        border-radius: 18px;
+      }
 
-  .card {
-    padding: 12px;
-    border-radius: 14px;
-  }
+      .topbar h1 {
+        font-size: 24px;
+      }
 
-  .topbar h1 {
-    font-size: 22px;
-  }
+      .section-title h2 {
+        font-size: 18px;
+      }
 
-  .section-title h2 {
-    font-size: 18px;
-  }
+      input,
+      select,
+      textarea,
+      button {
+        padding: 12px;
+        border-radius: 14px;
+      }
 
-  input,
-  select,
-  textarea,
-  button {
-    padding: 12px;
-    border-radius: 10px;
-  }
+      textarea {
+        min-height: 150px;
+      }
 
-  textarea {
-    min-height: 150px;
-  }
+      .teacher-note-card,
+      .note-item {
+        padding: 13px;
+      }
 
-  .teacher-note-card,
-  .note-item {
-    padding: 12px;
-  }
+      .teacher-note-title {
+        font-size: 16px;
+      }
+    }
 
-  .teacher-note-title {
-    font-size: 16px;
-  }
-}
-.teacher-note-summary {
-  background: linear-gradient(180deg, rgba(34, 197, 94, 0.14), rgba(34, 197, 94, 0.08));
-  border: 1px solid rgba(34, 197, 94, 0.35);
-  border-radius: 18px;
-  padding: 18px 20px;
-  margin-bottom: 14px;
-}
-
-.teacher-note-summary h5 {
-  margin: 0 0 8px;
-  font-size: 14px;
-  color: #bbf7d0;
-  letter-spacing: 0.02em;
-}
-
-.teacher-note-summary p {
-  margin: 0;
-  font-size: 17px;
-  line-height: 1.75;
-  font-weight: 600;
-  color: #f0fdf4;
-}
-
-/* 모바일에서 더 강조 */
-@media (max-width: 768px) {
-  .teacher-note-summary {
-    padding: 18px 16px;
-    border-radius: 16px;
-  }
-
-  .teacher-note-summary h5 {
-    font-size: 13px;
-    margin-bottom: 6px;
-  }
-
-  .teacher-note-summary p {
-    font-size: 19px;   /* 🔥 핵심 */
-    line-height: 1.8;
-    font-weight: 700;
-  }
-}
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 16px;
-}
-
-.pagination button {
-  width: auto;
-  min-width: 44px;
-  padding: 10px 12px;
-}
-
-.pagination .page-info {
-  color: var(--muted);
-  font-size: 14px;
-  padding: 0 6px;
-}
-
-.pagination .active-page {
-  background: var(--accent);
-  color: #052e16;
-  border: none;
-}
-
-@media (max-width: 768px) {
-  .pagination {
-    gap: 6px;
-  }
-
-  .pagination button {
-    min-width: 40px;
-    padding: 10px;
-  }
-}
-.install-banner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 14px;
-  padding: 14px 16px;
-  margin-bottom: 16px;
-  border-radius: 16px;
-  background: rgba(56, 189, 248, 0.10);
-  border: 1px solid rgba(56, 189, 248, 0.22);
-}
-
-.install-banner-text {
-  flex: 1 1 auto;
-  min-width: 0;
-}
-
-.install-banner-text strong {
-  display: block;
-  margin-bottom: 4px;
-}
-
-.install-banner-actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
-
-.install-banner-actions button {
-  width: auto;
-  min-width: 100px;
-}
-
-@media (max-width: 768px) {
-  .install-banner {
-    flex-direction: column;
-    align-items: stretch;
-    padding: 12px 14px;
-  }
-
-  .install-banner-actions {
-    width: 100%;
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .install-banner-actions button {
-    width: 100%;
-    min-width: 0;
-  }
-}
-    .in-app-notice {
-  position: fixed;
-  left: 12px;
-  right: 12px;
-  top: 14px;
-  z-index: 9999;
-  padding: 14px 16px;
-  border-radius: 16px;
-  background: rgba(15, 23, 42, 0.96);
-  border: 1px solid rgba(56, 189, 248, 0.35);
-  color: #f8fafc;
-  box-shadow: 0 14px 30px rgba(0,0,0,0.35);
-}
-
-.in-app-notice strong {
-  display: block;
-  margin-bottom: 4px;
-}
-
-.in-app-notice button {
-  margin-top: 10px;
-}
   </style>
 </head>
 <body>
@@ -1512,16 +1594,19 @@ for (const note of docs) {
   const comments = await loadNoteComments(note.id);
 
   const commentsHtml = comments.length
-    ? comments.map((comment) => `
-      <div class="teacher-note-block" style="margin-top:10px;">
-        <h5>
-          ${escapeHtml(comment.authorName || '이름 없음')}
-          <span class="small muted"> · ${comment.authorRole === 'teacher' ? '선생님' : '학생'}</span>
-        </h5>
-        <p>${escapeHtml(comment.text || '')}</p>
-      </div>
-    `).join('')
-    : '<div class="small muted" style="margin-top:10px;">아직 댓글이 없습니다.</div>';
+  ? `
+    <div class="comment-thread">
+      ${comments.map((comment) => `
+        <div class="comment-bubble ${comment.authorRole === 'teacher' ? 'teacher' : 'student'}">
+          <div class="comment-author">
+            ${escapeHtml(comment.authorName || '이름 없음')} · ${comment.authorRole === 'teacher' ? '선생님' : '학생'}
+          </div>
+          <div class="comment-text">${escapeHtml(comment.text || '')}</div>
+        </div>
+      `).join('')}
+    </div>
+  `
+  : '<div class="small muted" style="margin-top:10px;">아직 댓글이 없습니다.</div>';
 
   items.push(`
     <div class="note-item">
@@ -1530,9 +1615,22 @@ for (const note of docs) {
         수업일: ${escapeHtml(note.lessonDate || '-')} · 이해도: ${note.understanding}/5
       </div>
 
-      <p><strong>요약</strong><br>${escapeHtml(note.summary)}</p>
-      <p><strong>질문</strong><br>${escapeHtml(note.questions)}</p>
-      <p><strong>과제/복습</strong><br>${escapeHtml(note.homework)}</p>
+      <div class="teacher-note-sections">
+  <div class="teacher-note-block">
+    <h5>오늘 수업 요약</h5>
+    <p>${escapeHtml(note.summary || '-')}</p>
+  </div>
+
+  <div class="teacher-note-block">
+    <h5>헷갈리는 점 / 질문</h5>
+    <p>${escapeHtml(note.questions || '-')}</p>
+  </div>
+
+  <div class="teacher-note-block">
+    <h5>과제 / 복습</h5>
+    <p>${escapeHtml(note.homework || '-')}</p>
+  </div>
+</div>
 
       ${note.homeworkFile?.url ? `
         <p>
@@ -1696,16 +1794,19 @@ for (const note of pagedNotes) {
   const comments = await loadNoteComments(note.id);
 
   const commentsHtml = comments.length
-    ? comments.map((comment) => `
-      <div class="teacher-note-block" style="margin-top:10px;">
-        <h5>
-          ${escapeHtml(comment.authorName || '이름 없음')}
-          <span class="small muted"> · ${comment.authorRole === 'teacher' ? '선생님' : '학생'}</span>
-        </h5>
-        <p>${escapeHtml(comment.text || '')}</p>
-      </div>
-    `).join('')
-    : '<div class="small muted" style="margin-top:10px;">아직 댓글이 없습니다.</div>';
+  ? `
+    <div class="comment-thread">
+      ${comments.map((comment) => `
+        <div class="comment-bubble ${comment.authorRole === 'teacher' ? 'teacher' : 'student'}">
+          <div class="comment-author">
+            ${escapeHtml(comment.authorName || '이름 없음')} · ${comment.authorRole === 'teacher' ? '선생님' : '학생'}
+          </div>
+          <div class="comment-text">${escapeHtml(comment.text || '')}</div>
+        </div>
+      `).join('')}
+    </div>
+  `
+  : '<div class="small muted" style="margin-top:10px;">아직 댓글이 없습니다.</div>';
 
   items.push(`
     <div class="teacher-note-card">
